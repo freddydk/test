@@ -1,0 +1,19 @@
+name: Simple Matrix
+
+on:
+  workflow_dispatch:
+
+defaults:
+  run:
+    shell: PowerShell
+
+jobs:
+  Country:
+    runs-on: windows-latest
+    strategy:
+      matrix:
+        country: [ 'DK', 'US', 'DE' ]
+    steps:
+    - name: Output country
+      run: |
+        Write-Host ${{ matrix.country }}

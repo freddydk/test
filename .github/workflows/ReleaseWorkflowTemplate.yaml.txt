@@ -1,0 +1,32 @@
+name: {0}
+
+on:
+  workflow_dispatch:
+    inputs:
+      appVersion:
+        description: App version to deploy (current, prerelease, draft, latest or version number)
+        required: false
+        default: 'current'
+
+defaults:
+  run:
+    shell: PowerShell
+
+jobs:
+  deploy:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Deploy
+        uses: freddydk/ghgo/Deploy@main
+        env:
+          secrets: ${{ toJson(secrets) }}
+        with:
+          workflow: 'Manual'
+          artifactsUrl: ${{ github.event.inputs.appVersion }}
+          tenantId: {1}
+          environmentName: {2}
+          name: {3}

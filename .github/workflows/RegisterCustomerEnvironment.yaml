@@ -1,0 +1,77 @@
+name: Register customer environment
+
+on:
+  workflow_dispatch:
+    inputs:
+      name:
+        description: Customer Name
+        required: true
+      tenantId:
+        description: Customer Tenant ID
+        required: true
+      environmentName:
+        description: Customer Environment Name
+        required: true
+      aadAppClientId:
+        description: AAD App Client Id or blank for RefreshToken
+        required: false
+        default: ''
+      aadAppClientSecretName:
+        description: Name of Secret containing AAD App Client Secret or RefreshToken
+        required: false
+        default: ''
+      productionEnvironment:
+        description: Production Environment (Y/N)
+        required: false
+        default: 'N'
+      continuousDeployment:
+        description: Continuous Deployment (Y/N)
+        required: false
+        default: 'N'
+      manualDeployment:
+        description: Create manual deployment workflow for this environment (Y/N)
+        required: false
+        default: 'N'
+      directCommit:
+        description: Direct COMMIT (Y/N)
+        required: false
+        default: 'N'
+
+defaults:
+  run:
+    shell: PowerShell
+
+jobs:
+  update:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Read settings
+        uses: freddydk/ghgo/ReadSettings@main
+        with:
+          get: KeyVaultName,GhTokenWorkflowSecretName
+
+      - name: Read secrets
+        uses: freddydk/ghgo/ReadSecrets@main
+        env:
+          secrets: ${{ toJson(secrets) }}
+        with:
+          keyVaultName: ${{ env.KEYVAULTNAME }}
+          secrets: 'ghTokenWorkflow=${{ env.GHTOKENWORKFLOWSECRETNAME }}'
+
+      - name: Register customer environment
+        uses: freddydk/ghgo/RegisterCustomerEnvironment@main
+        with:
+          workflowToken: ${{ env.ghTokenWorkflow }}
+          name: ${{ github.event.inputs.name }}
+          tenantId: ${{ github.event.inputs.tenantId }}
+          environmentName: ${{ github.event.inputs.environmentName }}
+          aadAppClientId: ${{ github.event.inputs.aadAppClientId }}
+          aadAppClientSecretName: ${{ github.event.inputs.aadAppClientSecretName }}
+          productionEnvironment: ${{ github.event.inputs.productionEnvironment }}
+          continuousDeployment: ${{ github.event.inputs.continuousDeployment }}
+          manualDeployment: ${{ github.event.inputs.manualDeployment }}
+          directCommit: ${{ github.event.inputs.directCommit }}

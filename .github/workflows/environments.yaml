@@ -1,0 +1,29 @@
+name: Environments
+
+on:
+  workflow_dispatch:
+
+defaults:
+  run:
+    shell: PowerShell
+
+jobs:
+  update:
+    runs-on: windows-latest
+
+    steps:
+      - name: Get
+        run: |
+          $headers = @{ 
+            "Authorization" = "token ${{github.token}}"
+            "Accept"        = "application/vnd.github.v3+json"
+          }
+          $url = "$($ENV:GITHUB_API_URL)/repos/$($ENV:GITHUB_REPOSITORY)"
+          $repo = Invoke-WebRequest -UseBasicParsing -Headers $headers -Uri $url
+
+          $url = "$($ENV:GITHUB_API_URL)/repos/$($ENV:GITHUB_REPOSITORY)/environments"
+          $environments = Invoke-WebRequest -UseBasicParsing -Headers $headers -Uri $url | ConvertFrom-Json
+          $environments.environments | ForEach-Object {
+            $environment = $_
+            Write-Host $environment.name
+          }

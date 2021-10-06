@@ -1,0 +1,103 @@
+name: Create release
+
+on:
+  workflow_dispatch:
+    inputs:
+      draft:
+        description: Draft (Y/N)
+        required: false
+        default: 'N'
+      prerelease:
+        description: Prerelease (Y/N)
+        required: false
+        default: 'N'
+
+concurrency: release
+
+defaults:
+  run:
+    shell: PowerShell
+
+jobs:
+  release:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Check for updates to GitHub-Go system files
+        uses: freddydk/ghgo/CheckForUpdates@main
+
+      - name: Read settings
+        uses: freddydk/ghgo/ReadSettings@main
+        with:
+          get: RepoVersion,RepoName,AppBuild,AppRevision,KeyVaultName,LicenseFileUrlSecretName,InsiderSasTokenSecretName
+
+      - name: Read secrets
+        uses: freddydk/ghgo/ReadSecrets@main
+        env:
+          secrets: ${{ toJson(secrets) }}
+        with:
+          keyVaultName: ${{ env.KEYVAULTNAME }}
+          secrets: 'licenseFileUrl=${{ env.LICENSEFILEURLSECRETNAME }},insiderSasToken=${{ env.INSIDERSASTOKENSECRETNAME }}'
+
+      - name: Run pipeline
+        uses: freddydk/ghgo/RunPipeline@main
+        with:
+          insiderSasToken: ${{ env.InsiderSasToken }}
+          licenseFileUrl: ${{ env.LicenseFileUrl }}
+          appBuild: ${{ env.appBuild }}
+          appRevision: ${{ env.appRevision }}
+
+      - name: Publish test results
+        if: success() || failure()
+        uses: mikepenz/action-junit-report@v1
+        with:
+          report_paths: 'TestResults*.xml'
+          github_token: ${{ github.token }}
+          
+      - name: Publish artifacts - apps
+        uses: actions/upload-artifact@v2
+        with:
+          name: '${{ env.repoName}}-Apps-${{ env.repoVersion}}.${{ env.appBuild}}.${{ env.appRevision}}'
+          path: output/Apps/
+          if-no-files-found: ignore
+
+      - name: Publish artifacts - test apps
+        uses: actions/upload-artifact@v2
+        with:
+          name: '${{ env.repoName}}-TestApps-${{ env.repoVersion}}.${{ env.appBuild}}.${{ env.appRevision}}'
+          path: output/TestApps/
+          if-no-files-found: ignore
+
+      - name: Create release
+        uses: actions/create-release@v1
+        id: create_release
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        with:
+          draft: ${{ github.event.inputs.draft == 'Y' }}
+          prerelease: ${{ github.event.inputs.prerelease == 'Y' }}
+          release_name: '${{ env.repoVersion}}.${{ env.appBuild}}.${{ env.appRevision}}'
+          tag_name: '${{ env.repoVersion}}.${{ env.appBuild}}.${{ env.appRevision}}'
+          body_path: README.md
+
+      - name: Zip release artifacts
+        run: |
+          Compress-Archive -Path 'output/Apps/*' -DestinationPath 'output/${{ env.repoName}}-Apps-${{ env.repoVersion}}.${{ env.appBuild}}.${{ env.appRevision}}.zip'
+
+      - name: Upload release artifacts
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: 'output/${{ env.repoName}}-Apps-${{ env.repoVersion}}.${{ env.appBuild}}.${{ env.appRevision}}.zip'
+          asset_name: '${{ env.repoName}}-Apps-${{ env.repoVersion}}.${{ env.appBuild}}.${{ env.appRevision}}.zip'
+          asset_content_type: application/zip
+
+      - name: Cleanup
+        if: always()
+        uses: freddydk/ghgo/PipelineCleanup@main
+

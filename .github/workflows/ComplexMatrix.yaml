@@ -1,0 +1,46 @@
+name: Complex Matrix
+
+on:
+  workflow_dispatch:
+
+defaults:
+  run:
+    shell: PowerShell
+
+jobs:
+  DetermineCountries:
+    runs-on: windows-latest
+    outputs:
+      os: ${{steps.CalculateCountries.outputs.os}}
+      matrix: ${{steps.CalculateCountries.outputs.matrix}}
+      strategy: ${{steps.CalculateCountries.outputs.strategy}}
+    steps:
+    - name: Calculate Countries
+      id: CalculateCountries
+      run: |
+        $matrix = @{"country" = @('DK','US','DE','W1','SE','IS','GB')} | ConvertTo-Json -compress
+        Write-Host "::set-output name=matrix::$matrix"
+        $os = "windows-2016"
+        $strategy = @{"matrix" = @{"country" = @('DK','US','DE','W1','SE','IS','GB')}; "max-parallel" = 5; "fail-fast" = $true} | ConvertTo-Json -compress
+        Write-Host "::set-output name=strategy::$strategy"
+        Write-Host "::set-output name=os::$os"
+  SeeOutput:
+    runs-on: windows-latest
+    needs: DetermineCountries
+    steps:
+    - name: Output
+      run: |
+        Write-Host "${{ needs.DetermineCountries.outputs.matrix }}"
+        Write-Host "${{ needs.DetermineCountries.outputs.maxparallel }}"
+        Write-Host "${{needs.DetermineCountries.outputs.matrix}}"
+        Write-Host "${{needs.DetermineCountries.outputs.strategy}}"
+        $strategy = '${{needs.DetermineCountries.outputs.strategy}}' | ConvertFrom-Json
+        Write-Host $strategy."max-parallel"
+  Country:
+    runs-on: ${{needs.DetermineCountries.outputs.os}}
+    needs: DetermineCountries
+    strategy: ${{fromJson(needs.DetermineCountries.outputs.strategy)}}
+    steps:
+      - name: Output country
+        run: |
+          Write-Host "'${{matrix.country}}'"

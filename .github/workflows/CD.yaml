@@ -1,0 +1,31 @@
+name: CD
+
+on:
+  workflow_run:
+    workflows: ["CI","Create Release"]
+    types:
+      - completed
+
+defaults:
+  run:
+    shell: PowerShell
+
+jobs:
+  deploy:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.workflow_run.head_branch }}
+
+      - name: Deploy
+        uses: freddydk/ghgo/Deploy@main
+        env:
+          secrets: ${{ toJson(secrets) }}
+        with:
+          workflow: ${{ github.event.workflow.name }}
+          artifactsUrl: ${{ github.event.workflow_run.artifacts_url }}
+

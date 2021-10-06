@@ -1,0 +1,36 @@
+name: Authentication test
+
+on:
+  workflow_dispatch:
+
+defaults:
+  run:
+    shell: PowerShell
+
+jobs:
+  update:
+    runs-on: windows-latest
+
+    steps:
+      - name: Submit Device Code Login Request
+        run: |
+          $gitHubGoHelperPath = "$([System.IO.Path]::GetTempFileName()).ps1"
+          $webClient = New-Object System.Net.WebClient
+          $webClient.CachePolicy = New-Object System.Net.Cache.RequestCachePolicy -argumentList ([System.Net.Cache.RequestCacheLevel]::NoCacheNoStore)
+          $webClient.DownloadFile('https://raw.githubusercontent.com/freddydk/ghgo/main/GitHub-Go-Helper.ps1', $gitHubGoHelperPath)
+          . $gitHubGoHelperPath -local
+          DownloadAndImportBcContainerHelper
+          $authContext = New-BcAuthContext -includeDeviceLogin -deviceLoginTimeout ([TimeSpan]::FromSeconds(0))
+          Add-Content -Path $env:GITHUB_ENV -Value "deviceCode=$($authContext.deviceCode)" 
+
+      - name: Sleep
+        run: |
+          $gitHubGoHelperPath = "$([System.IO.Path]::GetTempFileName()).ps1"
+          $webClient = New-Object System.Net.WebClient
+          $webClient.CachePolicy = New-Object System.Net.Cache.RequestCachePolicy -argumentList ([System.Net.Cache.RequestCacheLevel]::NoCacheNoStore)
+          $webClient.DownloadFile('https://raw.githubusercontent.com/freddydk/ghgo/main/GitHub-Go-Helper.ps1', $gitHubGoHelperPath)
+          . $gitHubGoHelperPath -local
+          DownloadAndImportBcContainerHelper
+          $deviceCode = $env:deviceCode
+          Write-Host $deviceCode
+          $authContext = New-BcAuthContext -includeDeviceLogin -deviceCode $deviceCode

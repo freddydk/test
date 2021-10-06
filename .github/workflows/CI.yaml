@@ -1,0 +1,84 @@
+name: CI
+
+on:
+  push:
+    paths-ignore:
+      - 'README.md'
+      - '.github/**'
+    branches: [ main ]
+  pull_request:
+    paths-ignore:
+      - 'README.md'
+      - '.github/**'
+    branches: [ main ]
+  workflow_dispatch:
+
+defaults:
+  run:
+    shell: PowerShell
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Check for updates to GitHub-Go system files
+        uses: freddydk/ghgo/CheckForUpdates@main
+
+      - name: Read settings
+        uses: freddydk/ghgo/ReadSettings@main
+        with:
+          get: RepoVersion,RepoName,AppBuild,AppRevision,KeyVaultName,LicenseFileUrlSecretName,InsiderSasTokenSecretName
+
+      - name: Read secrets
+        uses: freddydk/ghgo/ReadSecrets@main
+        env:
+          secrets: ${{ toJson(secrets) }}
+        with:
+          keyVaultName: ${{ env.KEYVAULTNAME }}
+          secrets: 'licenseFileUrl=${{ env.LICENSEFILEURLSECRETNAME }},insiderSasToken=${{ env.INSIDERSASTOKENSECRETNAME }}'
+
+      - name: Run pipeline
+        uses: freddydk/ghgo/RunPipeline@main
+        with:
+          insiderSasToken: ${{ env.InsiderSasToken }}
+          licenseFileUrl: ${{ env.LicenseFileUrl }}
+          appBuild: ${{ env.appBuild }}
+          appRevision: ${{ env.appRevision }}
+
+      - name: Publish test results
+        if: success() || failure()
+        uses: mikepenz/action-junit-report@v1
+        with:
+          report_paths: 'TestResults*.xml'
+          github_token: ${{ github.token }}
+          
+      - name: Publish artifacts - apps
+        uses: actions/upload-artifact@v2
+        with:
+          name: '${{ env.repoName}}-Apps-${{ env.repoVersion}}.${{ env.appBuild}}.${{ env.appRevision}}'
+          path: output/Apps/
+          if-no-files-found: ignore
+
+      - name: Publish artifacts - test apps
+        uses: actions/upload-artifact@v2
+        with:
+          name: '${{ env.repoName}}-TestApps-${{ env.repoVersion}}.${{ env.appBuild}}.${{ env.appRevision}}'
+          path: output/TestApps/
+          if-no-files-found: ignore
+
+      - name: Publish artifacts - test results
+        uses: actions/upload-artifact@v2
+        if: success() || failure()
+        with:
+          name: testresults
+          path: TestResults.xml
+          if-no-files-found: ignore
+
+      - name: Cleanup
+        if: always()
+        uses: freddydk/ghgo/PipelineCleanup@main
+

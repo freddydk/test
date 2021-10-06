@@ -1,0 +1,67 @@
+name: CICD
+
+on:
+  workflow_dispatch:
+
+defaults:
+  run:
+    shell: PowerShell
+
+jobs:
+  build:
+    runs-on: windows-latest
+    outputs:
+      matrix: ${{steps.CalcEnvironments.outputs.matrix}}
+    steps:
+      - name: build
+        run: |
+          Write-Host "BUILD"
+      - name: CalcEnvironments
+        id: CalcEnvironments
+        run: |
+          $headers = @{ 
+            "Authorization" = "token ${{github.token}}"
+            "Accept"        = "application/vnd.github.v3+json"
+          }
+          $url = "$($ENV:GITHUB_API_URL)/repos/$($ENV:GITHUB_REPOSITORY)/environments"
+          $environments = Invoke-WebRequest -UseBasicParsing -Headers $headers -Uri $url | ConvertFrom-Json
+          $matrix = @{ "environment" = @($environments.environments.name | Where-Object { $_ -notlike '*(Production)*'}) } | ConvertTo-Json -compress
+          Write-Host "::set-output name=matrix::$matrix"
+          Write-Host $matrix
+  deploy-sandbox:
+    needs: [build]
+    runs-on: windows-latest
+    strategy:
+      matrix: ${{fromJson(needs.build.outputs.matrix)}}
+      fail-fast: false
+    name: Deploy to ${{matrix.environment}}
+    environment:
+      name: ${{matrix.environment}}
+    steps:
+      - uses: actions/checkout@v2
+      - name: deploy
+        env:
+          AuthContext: ${{secrets.AuthContext}}
+        run: |
+          $environmentName = '${{matrix.environment}}'
+          Install-Module BcContainerHelper -force
+          if (-not ($env:AuthContext)) {
+            Write-Host "You need to create an environment secret called AUTHCONTEXT containing authentication information for the environment"
+            exit 1
+          }
+          try {
+            $authContextParams = "$env:AuthContext" | ConvertFrom-Json | ConvertTo-HashTable
+            $authContext = New-BcAuthContext @authContextParams
+          } catch {
+            Write-Host "Unable to authenticate"
+            exit 1
+          }
+          $environment = Get-BcEnvironments $authcontext | Where-Object { $_.Name -eq $environmentName }
+          if (-not ($environment)) {
+            Write-Host "Environment doesn't exist, skipping..."
+            exit 1
+          }
+          if ($environment.Type -ne "Sandbox") {
+            Write-Host "Environment is a $($environment.Type) environment, skipping..."
+            exit 1
+          }
