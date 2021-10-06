@@ -2,7 +2,6 @@ name: CallRunNumber
 
 on:
   workflow_dispatch:
-  workflow_call:
 
 defaults:
   run:
