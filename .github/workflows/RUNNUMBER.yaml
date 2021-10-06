@@ -1,0 +1,17 @@
+name: Dir
+
+on:
+  workflow_dispatch:
+
+defaults:
+  run:
+    shell: PowerShell
+
+jobs:
+  update:
+    runs-on: windows-latest
+
+    steps:
+      - name: RunNumber
+        run: |
+          Write-Host ${{ github.run_number }}
