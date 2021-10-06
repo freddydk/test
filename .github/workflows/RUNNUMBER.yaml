@@ -1,4 +1,4 @@
-name: Dir
+name: RunNumber
 
 on:
   workflow_dispatch:
