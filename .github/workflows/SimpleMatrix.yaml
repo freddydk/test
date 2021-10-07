@@ -13,7 +13,8 @@ jobs:
     strategy:
       matrix:
         country: [ 'DK', 'US', 'DE' ]
+        os: [ '2019', '2016' ]
     steps:
     - name: Output country
       run: |
-        Write-Host ${{ matrix.country }}
+        Write-Host '${{ matrix.os }} ${{ matrix.country }}'
