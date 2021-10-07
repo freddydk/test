@@ -8,7 +8,7 @@ defaults:
     shell: PowerShell
 
 jobs:
-  update:
+  upload:
     runs-on: windows-latest
 
     steps:
@@ -25,4 +25,18 @@ jobs:
           name: freddy
           path: freddy
 
+  download:
+    runs-on: windows-latest
+
+    steps:
+      - name: download
+        run: |
+          $headers = @{ 
+            "Authorization" = "token ${{github.token}}"
+            "Accept"        = "application/vnd.github.v3+json"
+          }
+          $url = "$($ENV:GITHUB_API_URL)/repos/$($ENV:GITHUB_REPOSITORY)/actions/artifacts"
+          $artifacts = (Invoke-WebRequest -UseBasicParsing -Headers $headers -Uri $url | ConvertFrom-Json).artifacts
+          $artifacts.name | Out-host
+          
 
