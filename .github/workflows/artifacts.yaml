@@ -1,4 +1,4 @@
-name: Dir
+name: Artifacts
 
 on:
   workflow_dispatch:
