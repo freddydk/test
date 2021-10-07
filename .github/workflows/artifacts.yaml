@@ -1,0 +1,28 @@
+name: Dir
+
+on:
+  workflow_dispatch:
+
+defaults:
+  run:
+    shell: PowerShell
+
+jobs:
+  update:
+    runs-on: windows-latest
+
+    steps:
+      - name: createfile
+        run: |
+          Set-location $ENV:GITHUB_WORKSPACE
+          New-Item "freddy" -ItemType Directory | Out-Null
+          set-location "freddy"
+          "Dette er en test" | Set-Content "myfile.txt"
+
+      - name: upload
+        uses: actions/upload-artifact@v2
+        with:
+          name: freddy
+          path: freddy
+
+
