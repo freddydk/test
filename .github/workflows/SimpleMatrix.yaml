@@ -22,7 +22,7 @@ jobs:
         write-host $json
   Country:
     runs-on: windows-latest
-    Needs: [ Environments ]
+    needs: [ Environments ]
     strategy:
       matrix:
         country: [ 'dk','us' ]
