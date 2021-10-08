@@ -8,23 +8,23 @@ defaults:
     shell: PowerShell
 
 jobs:
-  Environments:
+  Job1:
     runs-on: windows-latest
     outputs:
-      environments: ${{steps.Environments.outputs.environments}}
+      environments: ${{steps.environments.outputs.environments}}
     steps:
     - name: environments
       id: environments
-      run: |
+      run: |[
         $environments = @{ "include" = @( @{ "environmentName" = "google"; "url" = "http://www.google.com"}, @{ "environmentName" = "bing"; "url" = "http://www.bing.com" } ) } | ConvertTo-Json -compress
         Write-Host "::set-output name=environments::$($environments | ConvertTo-Json -compress)"
         $json = $environments | ConvertTo-Json -compress
         write-host $json
-  Country:
+  job2:
     runs-on: windows-latest
-    needs: [ Environments ]
+    needs: [ job1 ]
     strategy:
-      matrix: ${{ fromJSON(needs.Environments.outputs.environments) }}
+      matrix: ${{ fromJSON(needs.job1.outputs.environments) }}
     steps:
     - name: Output name and url
       run: |
