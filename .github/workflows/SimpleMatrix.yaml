@@ -10,10 +10,11 @@ defaults:
 jobs:
   Environments:
     runs-on: windows-latest
-    Outputs:
+    outputs:
       environments: ${{steps.Environments.outputs.environments}}
     steps:
-    - name: define
+    - name: environments
+      id: environments
       run: |
         $environments = @( @{ "environmentName" = "google"; "url" = "http://www.google.com"}, @{ "environmentName" = "bing"; "url" = "http://www.bing.com" } ) | ConvertTo-Json -compress
         Write-Host "::set-output name=environments::$($environments | ConvertTo-Json -compress)"
