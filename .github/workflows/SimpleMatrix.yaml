@@ -24,7 +24,7 @@ jobs:
     runs-on: windows-latest
     strategy:
       matrix:
-        country: ${{fromJson(needs.Environments.outputs.environments)}}.*.environmentName
+        country: ${{fromJson(toJson(fromJson(needs.Environments.outputs.environments).*.environmentName))}}
         os: [ '2019', '2016' ]
     steps:
     - name: Output country
