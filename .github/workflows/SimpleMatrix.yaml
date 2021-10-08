@@ -24,7 +24,7 @@ jobs:
     runs-on: windows-latest
     needs: [ Environments ]
     strategy:
-      matrix: ${{ needs.Environments.outputs.environments }}
+      matrix: ${{ fromJSON(needs.Environments.outputs.environments) }}
     steps:
     - name: Output name and url
       run: |
