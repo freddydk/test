@@ -1,4 +1,4 @@
-name: MatrixSample
+name: Sample Matrix
 on: push
 jobs:
   job1:
