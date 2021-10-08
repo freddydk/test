@@ -18,6 +18,7 @@ jobs:
       run: |
         $environments = @{ "include" = @( [ordered]@{ "environmentName" = "google"; "url" = "http://www.google.com"}, [ordered]@{ "environmentName" = "bing"; "url" = "http://www.bing.com" } ) } | ConvertTo-Json -compress
         $environments = @{ "environment" = @( "test", "test2" ) }
+        $environments = @( [ordered]@{ "environmentName" = "google"; "url" = "http://www.google.com"}, [ordered]@{ "environmentName" = "bing"; "url" = "http://www.bing.com" } ) | ConvertTo-Json -compress
         Write-Host "::set-output name=environments::$($environments | ConvertTo-Json -compress)"
         $json = $environments | ConvertTo-Json -compress
         write-host $json
@@ -40,7 +41,8 @@ jobs:
     runs-on: windows-latest
     needs: [ job1 ]
     strategy:
-      matrix: ${{fromJson(needs.job1.outputs.environments)}}
+      matrix:
+        include: ${{fromJson(needs.job1.outputs.environments)}}
     steps:
     - name: Output name and url
       run: |
