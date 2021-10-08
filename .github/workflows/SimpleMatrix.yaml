@@ -24,9 +24,10 @@ jobs:
     runs-on: windows-latest
     strategy:
       matrix:
-        country: ${{fromJson(toJson(fromJson(needs.Environments.outputs.environments).*.environmentName))}}
+        country: [ 'dk','us' ]
         os: [ '2019', '2016' ]
     steps:
     - name: Output country
       run: |
+        Write-Host '${{toJson(fromJson(needs.Environments.outputs.environments).*.environmentName)}}'
         Write-Host '${{ matrix.os }} ${{ matrix.country }}'
