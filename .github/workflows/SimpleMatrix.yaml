@@ -15,7 +15,7 @@ jobs:
     steps:
     - name: environments
       id: environments
-      run: |[
+      run: |
         $environments = @{ "include" = @( @{ "environmentName" = "google"; "url" = "http://www.google.com"}, @{ "environmentName" = "bing"; "url" = "http://www.bing.com" } ) } | ConvertTo-Json -compress
         Write-Host "::set-output name=environments::$($environments | ConvertTo-Json -compress)"
         $json = $environments | ConvertTo-Json -compress
