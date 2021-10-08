@@ -17,7 +17,7 @@ jobs:
       id: environments
       run: |
         $environments = @{ "include" = @( [ordered]@{ "environmentName" = "google"; "url" = "http://www.google.com"}, [ordered]@{ "environmentName" = "bing"; "url" = "http://www.bing.com" } ) } | ConvertTo-Json -compress
-        $environments = @( "test", "test2" )
+        $environments = @{ "environment" = @( "test", "test2" ) }
         Write-Host "::set-output name=environments::$($environments | ConvertTo-Json -compress)"
         $json = $environments | ConvertTo-Json -compress
         write-host $json
