@@ -24,7 +24,12 @@ jobs:
     runs-on: windows-latest
     needs: [ job1 ]
     strategy:
-      matrix: ${{ fromJSON(needs.job1.outputs.environments) }}
+      matrix:
+        include:
+        - url: 'https://www.google.com'
+          environmentName: google
+        - url: 'https://www.bing.com'
+          environmentName: bing
     steps:
     - name: Output name and url
       run: |
