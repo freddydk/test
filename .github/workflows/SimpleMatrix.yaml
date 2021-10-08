@@ -30,5 +30,7 @@ jobs:
     steps:
     - name: Output country
       run: |
+        Write-Host '${{toJson(fromJson(needs.Environments.outputs.environments))}}'
+        Write-Host '${{toJson(fromJson(needs.Environments.outputs.environments).environmentName)}}'
         Write-Host '${{toJson(fromJson(needs.Environments.outputs.environments).*.environmentName)}}'
         Write-Host '${{ matrix.os }} ${{ matrix.country }}'
