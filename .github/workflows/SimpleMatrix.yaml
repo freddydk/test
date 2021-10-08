@@ -25,12 +25,12 @@ jobs:
     needs: [ Environments ]
     strategy:
       matrix:
-        country: [ 'dk','us' ]
-        os: [ '2019', '2016' ]
+        include:
+        - country: 'dk'
+          os: '2019'
+        - country: 'us'
+          os: '2016'
     steps:
     - name: Output country
       run: |
-        Write-Host '${{toJson(fromJson(needs.Environments.outputs.environments))}}'
-        Write-Host '${{toJson(fromJson(needs.Environments.outputs.environments).environmentName)}}'
-        Write-Host '${{toJson(fromJson(needs.Environments.outputs.environments).*.environmentName)}}'
         Write-Host '${{ matrix.os }} ${{ matrix.country }}'
