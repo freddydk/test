@@ -16,12 +16,8 @@ jobs:
     - name: fun
       id: fun
       run: |
-        $fun = [ordered]@{
-          "name" = "test"
-          "uses" = "freddydk/Test/Action@main"
-          } | convertto-json -compress
-        Write-Host "::set-output name=fun::[$fun]"
-        Write-Host "set-output name=fun::[$fun]"
+        Write-Host "::set-output name=fun::freddydk/Test/Action@main"
+        Write-Host "set-output name=fun::freddydk/Test/Action@main"
 
   job1:
     runs-on: windows-latest
@@ -35,5 +31,7 @@ jobs:
   job2:
     runs-on: windows-latest
     needs: [job0]
-    steps: ${{fromjson(needs.job0.outputs.fun)}}
+    steps: 
+      - name: test2
+        uses: ${{needs.job0.outputs.fun}}
 
