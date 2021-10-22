@@ -16,10 +16,10 @@ jobs:
     - name: fun
       id: fun
       run: |
-        $fun = @(
+        $fun = @{@(
           "name" = "test"
           "uses" = "freddydk/Test/Action@main"
-          ) | convertto-json -compress
+          )} | convertto-json -compress
         Write-Host "::set-output name=fun::$fun"
         Write-Host "set-output name=fun::$fun"
 
