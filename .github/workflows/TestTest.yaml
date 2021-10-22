@@ -32,8 +32,4 @@ jobs:
       with:
         s1: 'S1'
 
-  job2:
-    runs-on: windows-latest
-    needs: [job0]
-    steps: @{{fromjson(needs.job0.outputs.fun)}}
 
