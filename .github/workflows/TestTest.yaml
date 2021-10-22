@@ -38,6 +38,6 @@ jobs:
     steps:
     - name: print
       run: |
-        Write-Host @{{needs.job0.outputs.fun}}
-        Write-Host @{{fromjson(needs.job0.outputs.fun)}}
+        Write-Host '@{{needs.job0.outputs.fun}}'
+        Write-Host '@{{fromjson(needs.job0.outputs.fun)}}'
 
