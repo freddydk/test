@@ -1,0 +1,19 @@
+name: Test Test Action
+
+on:
+  workflow_dispatch:
+
+defaults:
+  run:
+    shell: PowerShell
+
+jobs:
+  job1:
+    runs-on: windows-latest
+    steps:
+    - name: test
+      uses: freddydk/Test/Action@main
+      with:
+        s1: 'S1'
+        s2: 'S2'
+

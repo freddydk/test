@@ -1,0 +1,19 @@
+name: PowerShell script
+author: Freddy Kristiansen
+inputs:
+  s1:
+    description: String 1
+    required: false
+    default: 'default s1'
+  s2:
+    description: String 2
+    required: false
+    default: 'default s2'
+runs:
+  using: composite
+  steps:
+    - run: ${{ github.action_path }}/test.ps1 -s1 '${{ inputs.s1 }}' -s2 '${{ inputs.s2 }}'
+      shell: PowerShell
+branding:
+  icon: terminal
+  color: blue
