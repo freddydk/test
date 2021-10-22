@@ -33,5 +33,5 @@ jobs:
     needs: [job0]
     steps: 
       - name: test2
-        uses: ${{needs.job0.outputs.fun}}
+        uses: '${{needs.job0.outputs.fun}}'
 
