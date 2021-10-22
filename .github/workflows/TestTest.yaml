@@ -26,6 +26,5 @@ jobs:
     steps:
     - name: test
       uses: freddydk/Test/Action@main
-      with:
-        @{{needs.job0.outputs.fun}}
+      with: @{{fromJson(needs.job0.outputs.fun)}}
 
