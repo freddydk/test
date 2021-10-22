@@ -20,8 +20,8 @@ jobs:
           "name" = "test"
           "uses" = "freddydk/Test/Action@main"
           } | convertto-json -compress
-        Write-Host "::set-output name=fun::$fun"
-        Write-Host "set-output name=fun::$fun"
+        Write-Host "::set-output name=fun::[$fun]"
+        Write-Host "set-output name=fun::[$fun]"
 
   job1:
     runs-on: windows-latest
