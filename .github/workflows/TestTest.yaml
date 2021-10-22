@@ -35,9 +35,5 @@ jobs:
   job2:
     runs-on: windows-latest
     needs: [job0]
-    steps:
-    - name: print
-      run: |
-        Write-Host '${{needs.job0.outputs.fun}}'
-        Write-Host '${{fromjson(needs.job0.outputs.fun)}}'
+    steps: ${{fromjson(needs.job0.outputs.fun)}}
 
