@@ -8,11 +8,23 @@ defaults:
     shell: PowerShell
 
 jobs:
+  job0:
+    runs-on: windows-latest
+    outputs:
+      fun: ${{steps.fun.outputs.fun}}
+    steps:
+    - name: fun
+      id: fun
+      run: |
+        $fun = @{ "s1" = "my s1"; "s2" = "my s2" } | convertto-json -compress
+        Write-Host "::set-output name=fun::$fun"
+        Write-Host "set-output name=fun::$fun"
+
   job1:
     runs-on: windows-latest
+    needs: [job0]
     steps:
     - name: test
       uses: freddydk/Test/Action@main
-      with:
-        s1: 'S1'
+      with: @{{needs.job0.outputs.fun}}
 
