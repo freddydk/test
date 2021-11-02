@@ -15,7 +15,7 @@ jobs:
       - name: GCI
         run: |
           Set-location "c:\"
-          Get-ChildItem -Recurse
+          Get-ChildItem
           $ENV:TESTENV = "FREDDY"
 
       - name: GCI
