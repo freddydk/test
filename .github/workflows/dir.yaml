@@ -16,7 +16,7 @@ jobs:
         run: |
           Set-location "c:\"
           Get-ChildItem
-          $ENV:TESTENV = "FREDDY"
+          Add-Content -Path $env:GITHUB_ENV -Value "TESTENV=FREDDY"
 
       - name: GCI2
         run: |
