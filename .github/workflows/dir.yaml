@@ -16,3 +16,8 @@ jobs:
         run: |
           Set-location "c:\"
           Get-ChildItem -Recurse
+          $ENV:TESTENV = "FREDDY"
+
+      - name: GCI
+        run: |
+          Write-Host "ENVVAR $ENV:TESTENV"
