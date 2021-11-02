@@ -18,6 +18,6 @@ jobs:
           Get-ChildItem
           $ENV:TESTENV = "FREDDY"
 
-      - name: GCI
+      - name: GCI2
         run: |
           Write-Host "ENVVAR $ENV:TESTENV"
