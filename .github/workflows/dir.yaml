@@ -33,3 +33,10 @@ jobs:
       - name: Get-Module-ListAvailable
         run: |
           Get-Module -ListAvailable
+
+      - name: ReadFromKeyVault
+        run: |
+          $azureCredentials = '${{ Secrets.Azure_Credentials }}' | ConvertFrom-Json
+          $azureCredentials.KeyVaultName
+          Import-Module AzureRM.KeyVault
+          
