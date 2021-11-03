@@ -40,20 +40,13 @@ jobs:
         run: |
           $azureCredentials = '${{ Secrets.Azure_Credentials }}' | ConvertFrom-Json
           $azureCredentials.KeyVaultName
-          Write-Host "a"
           Get-Module -Name 'AzureRM.KeyVault' -listAvailable | Import-Module -WarningAction SilentlyContinue
-          Write-Host "b"
           Get-Module -Name 'AzureRM.Profile' -listAvailable | Import-Module -WarningAction SilentlyContinue
-          Disable-AzureRmDataCollection
-          Write-Host "c"
+          Disable-AzureRmDataCollection -WarningAction SilentlyContinue
           $credential = New-Object PSCredential -argumentList $azureCredentials.clientId, (ConvertTo-SecureString $azureCredentials.clientSecret -AsPlainText -Force)
-          Write-Host "d"
           Add-AzureRmAccount -ServicePrincipal -Tenant $azureCredentials.tenantId -Credential $credential -WarningAction SilentlyContinue | Out-Null
-          Write-Host "e"
           Set-AzureRmContext -SubscriptionId $azureCredentials.subscriptionId -Tenant $azureCredentials.tenantId -WarningAction SilentlyContinue | Out-Null
-          Write-Host "f"
           $keyVaultSecret = Get-AzureKeyVaultSecret -VaultName $azureCredentials.keyVaultName -Name 'Password'
-          Write-Host "g"
           if ($keyVaultSecret) {
             $value = [Runtime.InteropServices.Marshal]::PtrToStringBSTR(([Runtime.InteropServices.Marshal]::SecureStringToBSTR($keyVaultSecret.SecretValue)))
             Write-Host "The password is $value"
