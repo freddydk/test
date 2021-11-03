@@ -32,7 +32,7 @@ jobs:
 
       - name: Get-Module-ListAvailable
         run: |
-          Get-Module -ListAvailable
+          Get-Module -Name 'AzureRM.KeyVault' -ListAvailable
 
       - name: ReadFromKeyVault
         run: |
