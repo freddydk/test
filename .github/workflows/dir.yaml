@@ -38,5 +38,19 @@ jobs:
         run: |
           $azureCredentials = '${{ Secrets.Azure_Credentials }}' | ConvertFrom-Json
           $azureCredentials.KeyVaultName
+          Import-Module AzureRM.Profile
           Import-Module AzureRM.KeyVault
-          
+          Clear-AzureRmContext -Scope Process
+          Clear-AzureRmContext -Scope CurrentUser -Force -ErrorAction SilentlyContinue
+          $credential = New-Object PSCredential -argumentList $azureCredentials.clientId, (ConvertTo-SecureString $azureCredentials.clientSecret -AsPlainText -Force)
+          Connect-AzureRmAccount -ServicePrincipal -Tenant $azureCredentials.tenantId -Credential $credential | Out-Null
+          Set-AzureRmContext -Subscription $azureCredentials.subscriptionId -Tenant $azureCredentials.tenantId | Out-Null
+          $keyVaultSecret = Get-AzureRmKeyVaultSecret -VaultName $azureCredentials.keyVaultName -Name 'Password'
+          if ($keyVaultSecret) {
+            $value = [Runtime.InteropServices.Marshal]::PtrToStringBSTR(([Runtime.InteropServices.Marshal]::SecureStringToBSTR($keyVaultSecret.SecretValue)))
+            Write-Host "The password is $value"
+          }
+          else {
+            Write-Host "No password secret available"
+          }
+         
