@@ -44,10 +44,11 @@ jobs:
           Get-Module -Name 'AzureRM.KeyVault' -listAvailable | Import-Module -WarningAction SilentlyContinue
           Write-Host "b"
           Get-Module -Name 'AzureRM.Profile' -listAvailable | Import-Module -WarningAction SilentlyContinue
+          Disable-AzureRmDataCollection
           Write-Host "c"
           $credential = New-Object PSCredential -argumentList $azureCredentials.clientId, (ConvertTo-SecureString $azureCredentials.clientSecret -AsPlainText -Force)
           Write-Host "d"
-          "N" | Add-AzureRmAccount -ServicePrincipal -Tenant $azureCredentials.tenantId -Credential $credential -WarningAction SilentlyContinue | Out-Null
+          Add-AzureRmAccount -ServicePrincipal -Tenant $azureCredentials.tenantId -Credential $credential -WarningAction SilentlyContinue | Out-Null
           Write-Host "e"
           Set-AzureRmContext -SubscriptionId $azureCredentials.subscriptionId -Tenant $azureCredentials.tenantId -WarningAction SilentlyContinue | Out-Null
           Write-Host "f"
