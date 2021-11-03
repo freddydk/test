@@ -33,6 +33,7 @@ jobs:
       - name: Get-Module-ListAvailable
         run: |
           (Get-Module -Name 'AzureRM.KeyVault' -listAvailable).ExportedCommands
+          Write-Host "-------"
           (Get-Module -Name 'AzureRM.Profile' -listAvailable).ExportedCommands
 
       - name: ReadFromKeyVault
@@ -41,9 +42,10 @@ jobs:
           $azureCredentials.KeyVaultName
           Get-Module -Name 'AzureRM.KeyVault' -listAvailable | Import-Module
           Get-Module -Name 'AzureRM.Profile' -listAvailable | Import-Module
+          Disable-AzureDataCollection
           $credential = New-Object PSCredential -argumentList $azureCredentials.clientId, (ConvertTo-SecureString $azureCredentials.clientSecret -AsPlainText -Force)
           Add-AzureRmAccount -ServicePrincipal -Tenant $azureCredentials.tenantId -Credential $credential | Out-Null
-          Set-AzureRmContext -Subscription $azureCredentials.subscriptionId -Tenant $azureCredentials.tenantId | Out-Null
+          Set-AzureRmContext -SubscriptionId $azureCredentials.subscriptionId -Tenant $azureCredentials.tenantId | Out-Null
           $keyVaultSecret = Get-AzureKeyVaultSecret -VaultName $azureCredentials.keyVaultName -Name 'Password'
           if ($keyVaultSecret) {
             $value = [Runtime.InteropServices.Marshal]::PtrToStringBSTR(([Runtime.InteropServices.Marshal]::SecureStringToBSTR($keyVaultSecret.SecretValue)))
