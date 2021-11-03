@@ -21,3 +21,15 @@ jobs:
       - name: GCI2
         run: |
           Write-Host "ENVVAR $ENV:TESTENV"
+
+      - name: Get-InstalledModule
+        run: |
+          Get-InstalledModule
+
+      - name: Get-Module
+        run: |
+          Get-Module
+
+      - name: Get-Module-ListAvailable
+        run: |
+          Get-Module -ListAvailable
