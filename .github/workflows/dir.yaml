@@ -40,12 +40,11 @@ jobs:
         run: |
           $azureCredentials = '${{ Secrets.Azure_Credentials }}' | ConvertFrom-Json
           $azureCredentials.KeyVaultName
-          Get-Module -Name 'AzureRM.KeyVault' -listAvailable | Import-Module
-          Get-Module -Name 'AzureRM.Profile' -listAvailable | Import-Module
-          Disable-AzureDataCollection
+          Get-Module -Name 'AzureRM.KeyVault' -listAvailable | Import-Module -WarningAction SilentlyContinue
+          Get-Module -Name 'AzureRM.Profile' -listAvailable | Import-Module -WarningAction SilentlyContinue
           $credential = New-Object PSCredential -argumentList $azureCredentials.clientId, (ConvertTo-SecureString $azureCredentials.clientSecret -AsPlainText -Force)
-          Add-AzureRmAccount -ServicePrincipal -Tenant $azureCredentials.tenantId -Credential $credential | Out-Null
-          Set-AzureRmContext -SubscriptionId $azureCredentials.subscriptionId -Tenant $azureCredentials.tenantId | Out-Null
+          Add-AzureRmAccount -ServicePrincipal -Tenant $azureCredentials.tenantId -Credential $credential -WarningAction SilentlyContinue | Out-Null
+          Set-AzureRmContext -SubscriptionId $azureCredentials.subscriptionId -Tenant $azureCredentials.tenantId -WarningAction SilentlyContinue | Out-Null
           $keyVaultSecret = Get-AzureKeyVaultSecret -VaultName $azureCredentials.keyVaultName -Name 'Password'
           if ($keyVaultSecret) {
             $value = [Runtime.InteropServices.Marshal]::PtrToStringBSTR(([Runtime.InteropServices.Marshal]::SecureStringToBSTR($keyVaultSecret.SecretValue)))
