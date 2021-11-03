@@ -38,8 +38,8 @@ jobs:
         run: |
           $azureCredentials = '${{ Secrets.Azure_Credentials }}' | ConvertFrom-Json
           $azureCredentials.KeyVaultName
-          Import-Module AzureRM.Profile
-          Import-Module AzureRM.KeyVault
+          Get-Module -Name 'AzureRM.KeyVault' -listAvailable | Import-Module
+          #Get-Module -Name 'AzureRM.Profile' -listAvailable | Import-Module
           Clear-AzureRmContext -Scope Process
           Clear-AzureRmContext -Scope CurrentUser -Force -ErrorAction SilentlyContinue
           $credential = New-Object PSCredential -argumentList $azureCredentials.clientId, (ConvertTo-SecureString $azureCredentials.clientSecret -AsPlainText -Force)
