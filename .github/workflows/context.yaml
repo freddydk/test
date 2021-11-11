@@ -19,7 +19,3 @@ jobs:
       - name: Echo on private
         run: echo "I am private"
         if: ${{github.event.repository.private}}
-
-      - name: Echo on public
-        run: echo "I am public"
-        if: ${{github.event.repository.public}}
