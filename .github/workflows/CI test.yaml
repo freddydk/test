@@ -28,4 +28,6 @@ jobs:
       - name: analyze
         run: |
           set-location $ENV:GITHUB_WORKSPACE
+          $env:GITHUB_USER = ${{ github.actor }}
+          $env:GITHUB_TOKEN = ${{ github.token }}
           git diff --name-only --diff-filter=ACMRT ${{ github.event.pull_request.base.sha }} ${{ github.sha }}
