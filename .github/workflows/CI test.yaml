@@ -33,5 +33,5 @@ jobs:
           $env:GITHUB_TOKEN = '${{ github.token }}'
           git config --global user.email "${{ github.actor }}@users.noreply.github.com"
           git config --global user.name "${{ github.actor }}"
-          invoke-git config --global hub.protocol https
+          git config --global hub.protocol https
           git diff --name-only --diff-filter=ACMDRT ${{ github.event.pull_request.base.sha }} HEAD
