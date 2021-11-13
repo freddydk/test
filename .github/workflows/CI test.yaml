@@ -21,6 +21,11 @@ jobs:
         run: |
           dir env:
 
+      - name: env
+        run: |
+          dir env:
+
       - name: analyze
         run: |
+          set-location $ENV::GITHUB_WORKSPACE
           git diff --name-only --diff-filter=ACMRT ${{ github.event.pull_request.base.sha }} ${{ github.sha }}
