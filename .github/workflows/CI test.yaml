@@ -1,0 +1,26 @@
+name: CITest
+
+on:
+  push:
+    paths-ignore:
+      - 'README.md'
+  pull_request:
+    paths-ignore:
+      - 'README.md'
+  workflow_dispatch:
+
+defaults:
+  run:
+    shell: PowerShell
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - name: env
+        run: |
+          dir env:
+
+      - name: analyze
+        run: |
+          git diff --name-only --diff-filter=ACMRT ${{ github.event.pull_request.base.sha }} ${{ github.sha }}
