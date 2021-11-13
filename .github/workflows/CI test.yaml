@@ -27,11 +27,16 @@ jobs:
 
       - name: analyze
         run: |
-          set-location $ENV:GITHUB_WORKSPACE
-          get-childitem -recurse | out-host
-          $env:GITHUB_USER = '${{ github.actor }}'
-          $env:GITHUB_TOKEN = '${{ github.token }}'
-          git config --global user.email "${{ github.actor }}@users.noreply.github.com"
-          git config --global user.name "${{ github.actor }}"
+          $baseFolder = Join-Path $env:TEMP ([Guid]::NewGuid().ToString())
+          New-Item $baseFolder -ItemType Directory | Out-Null
+          Set-Location $baseFolder
+          $actor = '${{ github.actor }}'
+          $token = '${{ github.token }}'
+          $serverUri = [Uri]::new($env:GITHUB_SERVER_URL)
+          $serverUrl = "$($serverUri.Scheme)://$($actor):$($token)@$($serverUri.Host)/$($env:GITHUB_REPOSITORY)"
+          $env:GITHUB_USER = $actor
+          $env:GITHUB_TOKEN = $token
+          git config --global user.email "$actor@users.noreply.github.com"
+          git config --global user.name "$actor"
           git config --global hub.protocol https
           git diff --name-only --diff-filter=ACMDRT ${{ github.event.pull_request.base.sha }} HEAD
