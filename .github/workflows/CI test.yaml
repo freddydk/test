@@ -33,4 +33,5 @@ jobs:
           set-location $ENV:GITHUB_WORKSPACE
           $env:GITHUB_USER = '${{ github.actor }}'
           $env:GITHUB_TOKEN = '${{ github.token }}'
+          git checkout ny
           git diff --name-only --diff-filter=ACMRT ${{ github.event.pull_request.base.sha }} ${{ github.sha }}
