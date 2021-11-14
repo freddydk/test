@@ -35,7 +35,8 @@ jobs:
           $response = Invoke-WebRequest -Headers $headers -UseBasicParsing -Method GET -Uri $url | ConvertFrom-Json
           $response | ConvertTo-Json
           $response.files.filename
-          $reponse.commits | % {
+          $response.commits.sha
+          $reponse.commits.GetEnumerator() | % {
             $commit = $_
             Write-Host $commit.sha
             Write-Host $commit.commit
