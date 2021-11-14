@@ -4,6 +4,7 @@ on:
   push:
     paths-ignore:
       - 'README.md'
+    branches: [main]
   pull_request:
     paths-ignore:
       - 'README.md'
@@ -23,4 +24,20 @@ jobs:
 
       - name: analyze
         run: |
-          git diff --name-only --diff-filter=ACMRT ${{ github.event.pull_request.base.sha }} ${{ github.sha }}
+          $actor = '${{ github.actor }}'
+          $token = '${{ github.token }}'
+          $headers = @{             
+              "Authorization" = "token $token"
+              "Accept" = "application/vnd.github.baptiste-preview+json"
+          }
+          $url = "https://api.github.com/repos/freddydk/Test/compare/${{ github.event.pull_request.base.sha }}...${{ github.sha }}?page=1&per_page=100"
+          Write-Host $url
+          $response = Invoke-WebRequest -Headers $headers -UseBasicParsing -Method GET -Uri $url | ConvertFrom-Json
+          $response | ConvertTo-Json
+          $response.files.filename
+          $response.commits.sha
+          $response.commits | % {
+            $commit = $_
+            Write-Host $commit.sha
+            Write-Host $commit.commit
+          }
