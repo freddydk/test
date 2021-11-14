@@ -18,26 +18,16 @@ jobs:
   build:
     runs-on: windows-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-
       - name: env
         run: |
           dir env:
 
       - name: analyze
         run: |
-          $baseFolder = Join-Path $env:TEMP ([Guid]::NewGuid().ToString())
-          New-Item $baseFolder -ItemType Directory | Out-Null
-          Set-Location $baseFolder
           $actor = '${{ github.actor }}'
           $token = '${{ github.token }}'
-          $serverUri = [Uri]::new($env:GITHUB_SERVER_URL)
-          $serverUrl = "$($serverUri.Scheme)://$($actor):$($token)@$($serverUri.Host)/$($env:GITHUB_REPOSITORY)"
-          $env:GITHUB_USER = $actor
-          $env:GITHUB_TOKEN = $token
-          git config --global user.email "$actor@users.noreply.github.com"
-          git config --global user.name "$actor"
-          git config --global hub.protocol https
-          git clone $serverUrl
-          git diff --name-only --diff-filter=ACMDRT ${{ github.event.pull_request.base.sha }} HEAD
+          $headers = @{             
+              "Accept" = "application/vnd.github.baptiste-preview+json"
+          }
+          $response = Invoke-WebRequest -Headers $headers -UseBasicParsing -Method GET -Uri "https://api.github.com/repos/freddydk/Test/compare/${{ github.event.pull_request.base.sha }}...${{ github.sha }}" | ConvertFrom-Json
+          $response.files.filename
