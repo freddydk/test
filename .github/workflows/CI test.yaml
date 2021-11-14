@@ -37,6 +37,6 @@ jobs:
           $response.files.filename
           $reponse.commits | % {
             $commit = $_
-            $url = $commit.commit.url
-            Write-Host $url
+            Write-Host $commit.sha
+            Write-Host $commit.commit
           }
