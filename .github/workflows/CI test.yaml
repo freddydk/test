@@ -29,18 +29,14 @@ jobs:
           $headers = @{             
               "Authorization" = "token $token"
               "Accept" = "application/vnd.github.baptiste-preview+json"
-              "per_page" = "100"
-              "page" = "1"
           }
-          $response = Invoke-WebRequest -Headers $headers -UseBasicParsing -Method GET -Uri "https://api.github.com/repos/freddydk/Test/compare/${{ github.event.pull_request.base.sha }}...${{ github.sha }}" | ConvertFrom-Json
+          $response = Invoke-WebRequest -Headers $headers -UseBasicParsing -Method GET -Uri "https://api.github.com/repos/freddydk/Test/compare/${{ github.event.pull_request.base.sha }}...${{ github.sha }}?page=1&per_page=100" | ConvertFrom-Json
           $response | ConvertTo-Json
           $response.files.filename
           $headers = @{             
               "Authorization" = "token $token"
               "Accept" = "application/vnd.github.baptiste-preview+json"
-              "per_page" = "100"
-              "page" = "2"
           }
-          $response = Invoke-WebRequest -Headers $headers -UseBasicParsing -Method GET -Uri "https://api.github.com/repos/freddydk/Test/compare/${{ github.event.pull_request.base.sha }}...${{ github.sha }}" | ConvertFrom-Json
+          $response = Invoke-WebRequest -Headers $headers -UseBasicParsing -Method GET -Uri "https://api.github.com/repos/freddydk/Test/compare/${{ github.event.pull_request.base.sha }}...${{ github.sha }}?page=1&per_page=100" | ConvertFrom-Json
           $response | ConvertTo-Json
           $response.files.filename
