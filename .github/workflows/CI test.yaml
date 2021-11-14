@@ -31,4 +31,5 @@ jobs:
               "Accept" = "application/vnd.github.baptiste-preview+json"
           }
           $response = Invoke-WebRequest -Headers $headers -UseBasicParsing -Method GET -Uri "https://api.github.com/repos/freddydk/Test/compare/${{ github.event.pull_request.base.sha }}...${{ github.sha }}" | ConvertFrom-Json
+          $response | ConvertTo-Json
           $response.files.filename
