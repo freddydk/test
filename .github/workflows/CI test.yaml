@@ -36,7 +36,7 @@ jobs:
           $response | ConvertTo-Json
           $response.files.filename
           $response.commits.sha
-          $reponse.commits.GetEnumerator() | % {
+          $response.commits | % {
             $commit = $_
             Write-Host $commit.sha
             Write-Host $commit.commit
