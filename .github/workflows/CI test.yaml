@@ -30,17 +30,13 @@ jobs:
               "Authorization" = "token $token"
               "Accept" = "application/vnd.github.baptiste-preview+json"
           }
-          $url = "https://api.github.com/repos/freddydk/Test/compare/${{ github.event.pull_request.base.sha }}...${{ github.sha }}?page=1&per_page=10"
+          $url = "https://api.github.com/repos/freddydk/Test/compare/${{ github.event.pull_request.base.sha }}...${{ github.sha }}?page=1&per_page=100"
           Write-Host $url
           $response = Invoke-WebRequest -Headers $headers -UseBasicParsing -Method GET -Uri $url | ConvertFrom-Json
           $response | ConvertTo-Json
           $response.files.filename
-          $headers = @{             
-              "Authorization" = "token $token"
-              "Accept" = "application/vnd.github.baptiste-preview+json"
+          $reponse.commits | % {
+            $commit = $_
+            $url = $commit.commit.url
+            Write-Host $url
           }
-          $url = "https://api.github.com/repos/freddydk/Test/compare/${{ github.event.pull_request.base.sha }}...${{ github.sha }}?page=2&per_page=10"
-          Write-Host $url
-          $response = Invoke-WebRequest -Headers $headers -UseBasicParsing -Method GET -Uri $url | ConvertFrom-Json
-          $response | ConvertTo-Json
-          $response.files.filename
