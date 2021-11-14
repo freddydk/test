@@ -30,19 +30,24 @@ jobs:
               "Authorization" = "token $token"
               "Accept" = "application/vnd.github.baptiste-preview+json"
           }
-          if ($ENV:GITHUB_EVENT_NAME -eq "pull_request") {
-            $url = "$($ENV:GITHUB_API_URL)/repos/$($ENV:GITHUB_REPOSITORY)/compare/${{ github.event.pull_request.base.sha }}...${{ github.sha }}"
+          if ($ENV:GITHUB_EVENT_NAME -eq "workflow_dispatch") {
+            Write-Host "BUILD ALL"
           }
           else {
-            $url = "$($ENV:GITHUB_API_URL)/repos/$($ENV:GITHUB_REPOSITORY)/compare/${{ github.event.before }}...${{ github.event.after }}"
-          }
-          Write-Host $url
-          $response = Invoke-WebRequest -Headers $headers -UseBasicParsing -Method GET -Uri $url | ConvertFrom-Json
-          $response | ConvertTo-Json
-          $response.files.filename
-          $response.commits.sha
-          $response.commits | % {
-            $commit = $_
-            Write-Host $commit.sha
-            Write-Host $commit.commit
+            if ($ENV:GITHUB_EVENT_NAME -eq "pull_request") {
+              $url = "$($ENV:GITHUB_API_URL)/repos/$($ENV:GITHUB_REPOSITORY)/compare/${{ github.event.pull_request.base.sha }}...${{ github.sha }}"
+            }
+            else {
+              $url = "$($ENV:GITHUB_API_URL)/repos/$($ENV:GITHUB_REPOSITORY)/compare/${{ github.event.before }}...${{ github.event.after }}"
+            }
+            Write-Host $url
+            $response = Invoke-WebRequest -Headers $headers -UseBasicParsing -Method GET -Uri $url | ConvertFrom-Json
+            $response | ConvertTo-Json
+            $response.files.filename
+            $response.commits.sha
+            $response.commits | % {
+              $commit = $_
+              Write-Host $commit.sha
+              Write-Host $commit.commit
+            }
           }
