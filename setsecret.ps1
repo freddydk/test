@@ -13,9 +13,5 @@ $ENV:GITHUB_TOKEN = $token
 
 Write-Host "authenticate with $token"
 gh auth login --with-token
-
-Write-Host "write Secret"
-$value = "MyNewSecret"
-
 gh secret set TESTSECRET -b $value --repo $repository
 Write-Host "done"
