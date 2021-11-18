@@ -15,7 +15,7 @@ Write-Host "authenticate with $token"
 gh auth login --with-token
 
 Write-Host "write Secret"
-$secret = "MyNewSecret"
+$value = "MyNewSecret"
 
-$value | gh secret set TESTSECRET --repo $repository
+gh secret set TESTSECRET -b $value --repo $repository
 Write-Host "done"
