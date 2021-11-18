@@ -7,7 +7,8 @@ $token = 'Somestrangetoken'
 $repository = $ENV:GITHUB_REPOSITORY
 
 Write-Host "authenticate with $token"
-'token' | gh auth login --with-token
+gh auth login
+
 Write-Host "write Secret"
 'NYSECRET' | gh secret set TESTSECRET --repo $repository
 Write-Host "done"
