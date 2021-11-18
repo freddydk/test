@@ -14,8 +14,6 @@ $ENV:GITHUB_TOKEN = $token
 Write-Host "authenticate with $token"
 Write-Host 1
 gh auth login --with-token 1> $null
-Write-Host 2
-gh auth login --with-token 2> $null
 Write-Host 3
 gh auth login --with-token 3> $null
 Write-Host 4
