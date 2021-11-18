@@ -1,3 +1,6 @@
+$ErrorActionPreference = "stop"
+Set-StrictMode -Version 2.0
+
 gh version
 $token = 'Some strange token'
 $repository = $ENV:GITHUB_REPOSITORY
