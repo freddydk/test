@@ -18,6 +18,10 @@ jobs:
         run: |
           dir env:
     
+      - name: event
+        run: |
+          Get-Content "$ENV:GITHUB_EVENT_PATH" -encoding UTF8
+
       - name: Echo on private
         run: echo "I am private"
         if: ${{github.event.repository.private}}
