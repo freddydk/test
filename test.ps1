@@ -1,4 +1,4 @@
-Write-Host "BönæøåÆØÅ"
+﻿Write-Host "BönæøåÆØÅ"
 Write-Host "BönæøåÆØÅ".Length
 
 
