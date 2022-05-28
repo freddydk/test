@@ -21,7 +21,7 @@ jobs:
         $matrix = @{"country" = @('DK','US','DE','W1','SE','IS','GB')} | ConvertTo-Json -compress
         Write-Host "::set-output name=matrix::$matrix"
         $os = "windows-2016"
-        $strategy = @{"matrix" = @{"country" = @('DK','US','DE','W1','SE','IS','GB')}; "max-parallel" = 5; "fail-fast" = $true} | ConvertTo-Json -compress
+        $strategy = @{"matrix" = @{"country" = @( @{"country" = 'DK', "OS" = "Windows-2019"},@{"country" = 'US', "OS" = "Windows-2022"})}; "max-parallel" = 5; "fail-fast" = $true} | ConvertTo-Json -compress
         Write-Host "::set-output name=strategy::$strategy"
         Write-Host "::set-output name=os::$os"
   SeeOutput:
@@ -37,10 +37,10 @@ jobs:
         $strategy = '${{needs.DetermineCountries.outputs.strategy}}' | ConvertFrom-Json
         Write-Host $strategy."max-parallel"
   Country:
-    runs-on: ${{needs.DetermineCountries.outputs.os}}
     needs: DetermineCountries
     strategy: ${{fromJson(needs.DetermineCountries.outputs.strategy)}}
+    runs-on: ${{matrix.country.os}}
     steps:
       - name: Output country
         run: |
-          Write-Host "'${{matrix.country}}'"
+          Write-Host "'${{matrix.country.country}}'"
