@@ -41,7 +41,7 @@ jobs:
   Country:
     needs: DetermineCountries
     strategy: ${{fromJson(needs.DetermineCountries.outputs.strategy)}}
-    runs-on: ${{fromJSON(needs.DetermineCountries.outputs.os)."DK" }}
+    runs-on: ${{fromJSON(needs.DetermineCountries.outputs.os).${matrix.country} }}
     steps:
       - name: Output country
         run: |
