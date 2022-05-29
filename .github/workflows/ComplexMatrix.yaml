@@ -22,7 +22,7 @@ jobs:
         Write-Host "::set-output name=matrix::$matrix"
         $os = "windows-2016"
         $json = @{"matrix" = @{"include" = @( @{ "country" = 'DK'; "os" = "Windows-2019" }, @{ "country" = 'US'; "os" = "Windows-2022" } ) }; "max-parallel" = 5; "fail-fast" = $true}
-        $trategy = $json | ConvertTo-Json -depth 99 -compress
+        $strategy = $json | ConvertTo-Json -depth 99 -compress
         Write-Host "::set-output name=strategy::$strategy"
   SeeOutput:
     runs-on: windows-latest
