@@ -40,7 +40,7 @@ jobs:
   Country:
     needs: DetermineCountries
     strategy: ${{fromJson(needs.DetermineCountries.outputs.strategy)}}
-    env: @{{ fromJSON('{"DK": "Windows-2019", "US": "Windows-2022"}').DK }}
+    env: ${{ fromJSON('{"DK": "Windows-2019", "US": "Windows-2022"}').DK }}
     runs-on: ${{fromJson(needs.DetermineCountries.outputs.os)}}
     steps:
       - name: Output country
