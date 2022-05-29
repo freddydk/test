@@ -23,6 +23,7 @@ jobs:
         $os = "windows-2016"
         $strategy = @{"matrix" = @{"country" = @( 'DK', 'US' ) }; "max-parallel" = 5; "fail-fast" = $true} | ConvertTo-Json -compress
         $os = @{ "DK" = "Windows-2019"; "US" = "Windows-2022" } | ConvertTo-Json -compress
+
         Write-Host "::set-output name=strategy::$strategy"
         Write-Host "::set-output name=os::$os"
   SeeOutput:
@@ -40,8 +41,7 @@ jobs:
   Country:
     needs: DetermineCountries
     strategy: ${{fromJson(needs.DetermineCountries.outputs.strategy)}}
-    env: ${{ fromJSON('{"DK": "Windows-2019", "US": "Windows-2022"}').DK }}
-    runs-on: ${{fromJson(needs.DetermineCountries.outputs.os)}}
+    runs-on: ${{fromJSON(needs.DetermineCountries.outputs.os).DK }}
     steps:
       - name: Output country
         run: |
