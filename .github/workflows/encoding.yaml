@@ -18,6 +18,9 @@ jobs:
 
       - name: WriteHost
         run: |
+          $s = 'aäoöuü'
+          $s.length | Out-Host
+          $s.GetType() | Out-Host
           Write-Host 'aäoöuü'
 
       - name: Info
