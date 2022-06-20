@@ -1,4 +1,4 @@
-name: Encoding
+﻿name: Encoding
 
 on:
   workflow_dispatch:
