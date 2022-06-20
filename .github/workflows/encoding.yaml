@@ -45,8 +45,8 @@ jobs:
         run: |
           $s1 = '${{ Secrets.EncStr }}'
           $bytes = New-Object Byte[] ($s1.length)
-          for($i=0; $i -lt $s1.length; $i++) { $b[$i] = [byte]($s1[$i]) }
-          $s2 = [System.Text.Encoding]::UTF8.GetString($b)
+          for($i=0; $i -lt $s1.length; $i++) { $bytes[$i] = [byte]($s1[$i]) }
+          $s2 = [System.Text.Encoding]::UTF8.GetString($bytes)
           $s1.length | Out-Host
           $s2.length | Out-Host
           Write-Host $s1
