@@ -1,4 +1,4 @@
-name: Dir
+name: Encoding
 
 on:
   workflow_dispatch:
@@ -13,14 +13,13 @@ jobs:
 
     steps:
       - name: Echo
-        run: echo 'aäoöuü'
+        run: |
+          echo 'aäoöuü'
 
-    steps:
       - name: WriteHost
         run: |
           Write-Host 'aäoöuü'
 
-    steps:
       - name: Info
         run: |
           $OutputEncoding = [console]::OutputEncoding
