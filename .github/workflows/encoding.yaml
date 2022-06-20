@@ -26,3 +26,9 @@ jobs:
           $InputEncoding = [console]::InputEncoding
           echo $OutputEncoding
           echo $InputEncoding
+
+      - name: Decode
+        run: |
+          $encText = "YcOkb8O2dcO8"
+          $DecodedText = [System.Text.Encoding]::UTF8.GetString([System.Convert]::FromBase64String($encText))
+          Write-Host $DecodedText
