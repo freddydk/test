@@ -43,7 +43,7 @@ jobs:
 
       - name: Secrets
         run: |
-          $s = '${{ secrets.ËNCSTR }}'
+          $s = '${{ secrets.ENCSTR }}'
           $s.length | Out-Host
           Write-Host $s
 
