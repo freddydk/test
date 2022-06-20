@@ -43,9 +43,9 @@ jobs:
 
       - name: Secrets
         run: |
-          $s1 = '${{ secrets.ENCSTR }}'
-          $b = New-Object [Byte[]] ($s1.length)
-          for($i=0; $i<$s1.length; $i++) { $b[$i] = [byte]($s1[i]) }
+          $s1 = 'aäoöuü'
+          $b = New-Object Byte[] ($s1.length)
+          for($i=0; $i -lt $s1.length; $i++) { $b[$i] = [byte]($s1[$i]) }
           $s2 = [System.Text.Encoding]::UTF8.GetString($b)
           $s1.length | Out-Host
           $s2.length | Out-Host
