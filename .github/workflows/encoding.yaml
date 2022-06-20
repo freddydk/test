@@ -27,6 +27,12 @@ jobs:
           echo $OutputEncoding
           echo $InputEncoding
 
+      - name: Encode
+        run: |
+          $Bytes = [System.Text.Encoding]::UTF8.GetBytes('aäoöuü')
+          $EncodedText =[Convert]::ToBase64String($Bytes)
+          Write-Host $EncodedText
+
       - name: Decode
         run: |
           $encText = "YcOkb8O2dcO8"
