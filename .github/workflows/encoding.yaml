@@ -21,6 +21,9 @@ jobs:
           $s = 'aäoöuü'
           $s.length | Out-Host
           $s.GetType() | Out-Host
+          $s = "aäoöuü"
+          $s.length | Out-Host
+          $s.GetType() | Out-Host
           Write-Host 'aäoöuü'
 
       - name: Info
@@ -29,6 +32,14 @@ jobs:
           $InputEncoding = [console]::InputEncoding
           echo $OutputEncoding
           echo $InputEncoding
+
+      - name: Env
+        env:
+          str: "aäoöuü"
+        run: |
+          $s = $env:str
+          $s.length | Out-Host
+          Write-Host $s
 
       - name: Encode
         run: |
