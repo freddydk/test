@@ -18,13 +18,13 @@ jobs:
 
       - name: WriteHost
         run: |
-          $s = 'aäoöuü'
+          $s = 'aäxöuü'
           $s.length | Out-Host
-          $s.GetType() | Out-Host
-          $s = "aäoöuü"
+          Write-Host $s
+          $s = "aäxöuü"
+          $s = [System.Text.Encoding]::UTF8.GetString([System.Text.Encoding]::default.GetBytes($s))
           $s.length | Out-Host
-          $s.GetType() | Out-Host
-          Write-Host 'aäoöuü'
+          Write-Host $s
 
       - name: Info
         run: |
