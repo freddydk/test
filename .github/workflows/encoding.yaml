@@ -41,6 +41,12 @@ jobs:
           $s.length | Out-Host
           Write-Host $s
 
+      - name: Secrets
+        run: |
+          $s = '${{ secrets.ËNCSTR }}'
+          $s.length | Out-Host
+          Write-Host $s
+
       - name: Encode
         run: |
           $Bytes = [System.Text.Encoding]::UTF8.GetBytes('aäoöuü')
