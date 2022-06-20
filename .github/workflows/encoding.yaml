@@ -45,9 +45,9 @@ jobs:
         env:
           str: ${{ toJson(secrets) }}
         run: |
-          $s = $env:str
-          $s.length | Out-Host
-          Write-Host $s
+          $s = $env:str | ConvertFrom-Json
+          $s.encstr.length | Out-Host
+          Write-Host $s.encstr.substring(1)
 
       - name: Secrets
         run: |
