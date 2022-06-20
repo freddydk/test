@@ -10,5 +10,20 @@ defaults:
 jobs:
   output:
     runs-on: windows-latest
+
     steps:
-      - run: echo 'aäoöuü'
+      - name: Echo
+        run: echo 'aäoöuü'
+
+    steps:
+      - name: WriteHost
+        run: |
+          Write-Host 'aäoöuü'
+
+    steps:
+      - name: Info
+        run: |
+          $OutputEncoding = [console]::OutputEncoding
+          $InputEncoding = [console]::InputEncoding
+          echo $OutputEncoding
+          echo $InputEncoding
