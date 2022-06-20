@@ -1,0 +1,14 @@
+name: Dir
+
+on:
+  workflow_dispatch:
+
+defaults:
+  run:
+    shell: powershell
+
+jobs:
+  output:
+    runs-on: windows-latest
+    steps:
+      - run: echo 'aäoöuü'
