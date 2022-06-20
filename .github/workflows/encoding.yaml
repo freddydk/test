@@ -41,6 +41,14 @@ jobs:
           $s.length | Out-Host
           Write-Host $s
 
+      - name: EnvSecrets
+        env:
+          str: ${{ toJson(secrets) }}
+        run: |
+          $s = $env:str
+          $s.length | Out-Host
+          Write-Host $s
+
       - name: Secrets
         run: |
           $s1 = '${{ Secrets.EncStr }}'
