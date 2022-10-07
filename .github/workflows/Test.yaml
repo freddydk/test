@@ -8,7 +8,7 @@ defaults:
     shell: PowerShell
 
 jobs:
-  Test job:
+  Testjob:
     runs-on: windows-latest
 
     steps:
