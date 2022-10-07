@@ -34,3 +34,8 @@ jobs:
         with:
           s1: 'Freddy'
           s2: 'Kristiansen'
+
+      - name: Store
+        run: |
+          Write-Host '${{ github.event.number }}'
+          Set-Content -path ".\NR" -value '${{ github.event.number }}'

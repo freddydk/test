@@ -1,0 +1,33 @@
+name: Test2
+
+# read-write repo token
+# access to secrets
+on:
+  workflow_run:
+    workflows: ["Test"]
+    types:
+      - completed
+
+jobs:
+  Testjob:
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/github-script@v6
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          script: |
+            var fs = require('fs');
+            var issue_number = Number(fs.readFileSync('./NR'));
+            github.rest.issues.createComment({
+              issue_number: issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: '# HELLO WORLD'
+            })
+
+      - name: Test
+        uses: freddydk/Test/Action@main
+        with:
+          s1: 'Freddy'
+          s2: 'Kristiansen'
