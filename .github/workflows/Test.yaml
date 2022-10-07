@@ -1,0 +1,19 @@
+name: Context
+
+on:
+  workflow_dispatch:
+
+defaults:
+  run:
+    shell: PowerShell
+
+jobs:
+  update:
+    runs-on: windows-latest
+
+    steps:
+      - name: Test
+        uses: freddydk/Test/Action@main
+        with:
+          s1: 'Freddy'
+          s2: 'Kristiansen'
