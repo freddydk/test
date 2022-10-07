@@ -1,4 +1,4 @@
-name: Context
+name: Test
 
 on:
   workflow_dispatch:
