@@ -19,3 +19,7 @@ $testSecret2.ToCharArray() | % { Write-Host -NoNewline "$_ " }
 Write-Host
 
 
+
+
+
+
