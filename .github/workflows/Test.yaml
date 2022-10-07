@@ -26,7 +26,7 @@ jobs:
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: '## Test 2\n👋 Thanks for reporting!'
+              body: '# Test\n## Test 2\n👋 Thanks for reporting!'
             })
 
       - name: Test
