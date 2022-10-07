@@ -18,7 +18,7 @@ jobs:
           Write-Host "::warning file=.github/workflows/Test.yaml::This is a warning"
 
       - uses: actions/github-script@v5
-        if: {{ github.context.eventName === 'pull_request' }}
+        if: github.event_name == 'pull_request'
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
