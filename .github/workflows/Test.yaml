@@ -8,10 +8,14 @@ defaults:
     shell: PowerShell
 
 jobs:
-  update:
+  Test job:
     runs-on: windows-latest
 
     steps:
+      - name: inline
+        run: |
+          Write-Host "::warning file=.github/workflows/Test.yaml::This is a warning"
+
       - name: Test
         uses: freddydk/Test/Action@main
         with:
