@@ -26,7 +26,7 @@ jobs:
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: '# Test\n## Test 2\n👋 Thanks for reporting!'
+              body: '# Test\n```mermaid\npie\n    title Pie Chart\n    "Dogs" : 386\n    "Cats" : 85\n    "Rats" : 150\n```'
             })
 
       - name: Test
