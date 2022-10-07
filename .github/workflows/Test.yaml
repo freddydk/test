@@ -26,6 +26,22 @@ jobs:
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
+              body: '## Test 2\n👋 Thanks for reporting!'
+            })
+
+      - name: inline
+        run: |
+          Start-Sleep -seconds 60
+
+      - uses: actions/github-script@v5
+        if: github.event_name == 'pull_request'
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          script: |
+            github.rest.issues.updateComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
               body: '# Test\n## Test 2\n👋 Thanks for reporting!'
             })
 
