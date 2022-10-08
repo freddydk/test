@@ -1,7 +1,6 @@
 name: Test
 
 on:
-  workflow_dispatch:
   pull_request:
 
 defaults:
@@ -45,8 +44,8 @@ jobs:
           }
           Set-Content -path (Join-Path $prPath "issue_number") -value '${{ github.event.number }}' -NoNewLine
 
-      - uses: actions/github-script@v6
-        if: github.event_name == 'pull_request'
+      - name: Create Comment
+        uses: actions/github-script@v6
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
@@ -58,7 +57,21 @@ jobs:
             })
             console.log(response.data.id)
 
-      - uses: actions/upload-artifact@v2
+      - name: List Check Suites
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            var response = await github.rest.checks.listSuitesForRef({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: ${{ env.GITHUB_REF}}
+            })
+            console.log(response)
+
+      - name: Upload Changed Files
+        uses: actions/upload-artifact@v2
         with:
           name: Pull_Request_Files
           path: '${{ steps.ChangedFiles.outputs.prfolder }}/'
+
