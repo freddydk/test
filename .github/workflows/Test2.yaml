@@ -89,6 +89,18 @@ jobs:
             console.log(response.data.id);
             core.setOutput('comment_id', response.data.id);
 
+      - name: List Check Suites
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            var response = await github.rest.checks.listSuitesForRef({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: context.ref
+            })
+            console.log(response)
+
       - name: Test
         uses: freddydk/Test/Action@main
         with:
