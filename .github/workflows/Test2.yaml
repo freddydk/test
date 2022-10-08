@@ -15,25 +15,9 @@ jobs:
 
     steps:
       - name: 'Download artifact'
-        uses: actions/github-script@v6
+        uses: actions/download-artifact@v3
         with:
-          script: |
-            var artifacts = await github.actions.listWorkflowRunArtifacts({
-               owner: context.repo.owner,
-               repo: context.repo.repo,
-               run_id: ${{github.event.workflow_run.id }},
-            });
-            var matchArtifact = artifacts.data.artifacts.filter((artifact) => {
-              return artifact.name == "Pull_Request_Files"
-            })[0];
-            var download = await github.actions.downloadArtifact({
-               owner: context.repo.owner,
-               repo: context.repo.repo,
-               artifact_id: matchArtifact.id,
-               archive_format: 'zip',
-            });
-            var fs = require('fs');
-            fs.writeFileSync('${{github.workspace}}/pr.zip', Buffer.from(download.data));
+          name: Pull_Request_Files
 
       - name: Unpack Pull Request Files
         id: ChangeFiles
@@ -42,8 +26,8 @@ jobs:
           $location = (Get-Location).path
           $prfolder = [GUID]::NewGuid().ToString()
           Write-Host "::set-output name=prfolder::$prfolder"
-          Expand-Archive -Path .\pr.zip -DestinationPath ".\$prfolder"
-          Remove-Item -Path ".pr.zip" -force
+          Expand-Archive -Path .\Pull_Request_Files.zip -DestinationPath ".\$prfolder"
+          Remove-Item -Path ".\Pull_Request_Files.zip" -force
 
       - uses: actions/checkout@v2
 
