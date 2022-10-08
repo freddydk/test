@@ -114,15 +114,17 @@ jobs:
           script: |
             var fs = require('fs');
             var comment_id = Number('${{ steps.CreateComment.outputs.comment_id }}')
-            var issue_number = Number(fs.readFileSync('issue_number'));
-            var response = await github.rest.issues.updateComment({
+            var response = await github.rest.issues.getComment({
               owner: context.repo.owner,
               repo: context.repo.repo,
               comment_id: comment_id,
-              issue_number: issue_number,
-              body: '# HELLO WORLD\n## HI AGAIN'
             });
             console.log(response);
-            console.log(response.data.id);
-            core.setOutput('comment_id', response.data.id);
-
+            console.log(response.data);
+            var body = response.data.body
+            github.rest.issues.updateComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              comment_id: comment_id,
+              body: body.concat('### This is an extra line\n',
+            });
