@@ -60,7 +60,7 @@ jobs:
         run: |
           $ErrorActionPreference = "STOP"
           $prfolder = '${{ steps.FolderName.outputs.prfolder }}'
-          Get-ChildItem -Path $prfolder | ForEach-Object {
+          Get-ChildItem -Path $prfolder -Recurse -File | ForEach-Object {
             $newPath = $_.FullName.Replace("$prfolder\","")
             $newFolder = [System.IO.Path]::GetDirectoryName($newPath)
             if (-not (Test-Path $newFolder)) {
@@ -75,7 +75,7 @@ jobs:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
             var fs = require('fs');
-            var issue_number = Number(fs.readFileSync('./issue_number'));
+            var issue_number = Number(fs.readFileSync('issue_number'));
             github.rest.issues.createComment({
               issue_number: issue.number,
               owner: context.repo.owner,
