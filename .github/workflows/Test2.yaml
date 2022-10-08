@@ -79,13 +79,13 @@ jobs:
             console.log('test1');
             console.log(issue_number);
             console.log('test2');
-            var result = github.rest.issues.createComment({
+            var response = github.rest.issues.createComment({
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: issue_number,
               body: '# HELLO WORLD'
             });
-            console.log(result);
+            console.log(response.id);
 
       - name: Test
         uses: freddydk/Test/Action@main
