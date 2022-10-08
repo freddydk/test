@@ -17,6 +17,7 @@ jobs:
       
       - name: inline
         run: |
+          $ErrorActionPreference = "STOP"
           $headers = @{             
               "Authorization" = "token $env:GITHUB_TOKEN"
               "Accept" = "application/vnd.github.baptiste-preview+json"
