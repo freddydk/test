@@ -38,7 +38,7 @@ jobs:
                run_id: run_id
             });
             console.log('2')
-            var matchArtifact = artifacts.data.artifacts.filter((artifact) => {
+            var matchArtifact = artifacts.artifacts.filter((artifact) => {
               return artifact.name == "Pull_Request_Files"
             })[0];
             console.log('3')
