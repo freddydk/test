@@ -30,10 +30,11 @@ jobs:
         uses: actions/github-script@v6
         with:
           script: |
+            var run_id = Number('${{github.event.workflow_run.id }}')
             var artifacts = github.rest.actions.listWorkflowRunArtifacts({
                owner: context.repo.owner,
                repo: context.repo.repo,
-               run_id: ${{github.event.workflow_run.id }},
+               run_id: run_id,
             });
             var matchArtifact = artifacts.data.artifacts.filter((artifact) => {
               return artifact.name == "Pull_Request_Files"
