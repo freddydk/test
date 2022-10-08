@@ -61,14 +61,13 @@ jobs:
           $ErrorActionPreference = "STOP"
           $prfolder = '${{ steps.FolderName.outputs.prfolder }}'
           Get-ChildItem -Path $prfolder | ForEach-Object {
-            Write-Host $_.FullName
             $newPath = $_.FullName.Replace("$prfolder\","")
-            Write-Host $newPath
             $newFolder = [System.IO.Path]::GetDirectoryName($newPath)
             if (-not (Test-Path $newFolder)) {
               New-Item $newFolder -ItemType Directory | Out-Null
             }
-            Copy-Item $_.FullName -Destination $newFolder
+            Write-Host "Copying $($_.FullName) to $newFolder"
+            Copy-Item $_.FullName -Destination $newFolder -Force
           }
 
       - uses: actions/github-script@v6
