@@ -46,10 +46,11 @@ jobs:
           Set-Content -path (Join-Path $prPath "issue_number") -value '${{ github.event.number }}' -NoNewLine
 
       - uses: actions/github-script@v6
-        if: github.event_name == 'pull_requestx'
+        if: github.event_name == 'pull_request'
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
+            console.log(context.issue.number);
             github.rest.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,
