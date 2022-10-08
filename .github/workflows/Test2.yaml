@@ -1,7 +1,5 @@
 name: Test2
 
-# read-write repo token
-# access to secrets
 on:
   workflow_run:
     workflows: ["Test"]
@@ -11,7 +9,7 @@ on:
 jobs:
   Testjob:
     runs-on: windows-latest
-   if: >
+    if: >
       github.event.workflow_run.event == 'pull_request' &&
       github.event.workflow_run.conclusion == 'success'
 
@@ -26,7 +24,7 @@ jobs:
                run_id: ${{github.event.workflow_run.id }},
             });
             var matchArtifact = artifacts.data.artifacts.filter((artifact) => {
-              return artifact.name == "pr"
+              return artifact.name == "Pull_Request_Files"
             })[0];
             var download = await github.actions.downloadArtifact({
                owner: context.repo.owner,
@@ -36,14 +34,40 @@ jobs:
             });
             var fs = require('fs');
             fs.writeFileSync('${{github.workspace}}/pr.zip', Buffer.from(download.data));
-      - run: unzip pr.zip
+
+      - name: Unpack Pull Request Files
+        id: ChangeFiles
+        run: |
+          $ErrorActionPreference = "STOP"
+          $location = (Get-Location).path
+          $prfolder = [GUID]::NewGuid().ToString()
+          Write-Host "::set-output name=prfolder::$prfolder"
+          Expand-Archive -Path .\pr.zip -DestinationPath ".\$prfolder"
+          Remove-Item -Path ".pr.zip" -force
+
+      - uses: actions/checkout@v2
+
+      - name: Add Pull Request Files
+        run: |
+          $ErrorActionPreference = "STOP"
+          $prfolder = '${{ steps.ChangedFiles.outputs.prfolder }}'
+          Get-ChildItem -Path $prfolder | ForEach-Object {
+            Write-Host $_.FullName
+            $newPath = $_.replace("$prfolder\\","")
+            Write-Host $newPath
+            $newFolder = [System.IO.Path]::GetDirectoryName($newPath)
+            if (-not (Test-Path $newFolder)) {
+              New-Item $newFolder -ItemType Directory | Out-Null
+            }
+            Copy-Item $_.FullName -Destination $newFolder
+          }
 
       - uses: actions/github-script@v6
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
             var fs = require('fs');
-            var issue_number = Number(fs.readFileSync('./NR'));
+            var issue_number = Number(fs.readFileSync('./issue_number'));
             github.rest.issues.createComment({
               issue_number: issue.number,
               owner: context.repo.owner,
