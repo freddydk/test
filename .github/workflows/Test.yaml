@@ -32,7 +32,7 @@ jobs:
             Write-Host "- $_"
             $path = Join-Path $location $_
             $newPath = Join-Path (Join-Path $location "PR") $_
-            $newfolder = [System.IO.Path]::GetDirectory($newpath)
+            $newfolder = [System.IO.Path]::GetDirectoryName($newpath)
             if (-not (Test-Path $newfolder)) {
               New-Item $newfolder -ItemType Directory | Out-Null
             }
