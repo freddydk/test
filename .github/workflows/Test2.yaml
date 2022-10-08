@@ -27,10 +27,10 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: 'Download artifact'
-        uses: actions/github-script@v3.1.0
+        uses: actions/github-script@v6
         with:
           script: |
-            var artifacts = await github.actions.listWorkflowRunArtifacts({
+            var artifacts = github.rest.actions.listWorkflowRunArtifacts({
                owner: context.repo.owner,
                repo: context.repo.repo,
                run_id: ${{github.event.workflow_run.id }},
@@ -38,7 +38,7 @@ jobs:
             var matchArtifact = artifacts.data.artifacts.filter((artifact) => {
               return artifact.name == "Pull_Request_Files"
             })[0];
-            var download = await github.actions.downloadArtifact({
+            var download = github.rest.actions.downloadArtifact({
                owner: context.repo.owner,
                repo: context.repo.repo,
                artifact_id: matchArtifact.id,
@@ -70,7 +70,7 @@ jobs:
             Copy-Item $_.FullName -Destination $newFolder -Force
           }
 
-      - uses: actions/github-script@v3
+      - uses: actions/github-script@v6
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
@@ -79,7 +79,7 @@ jobs:
             console.log('test1');
             console.log(issue_number);
             console.log('test2');
-            var result = await github.issues.createComment({
+            var result = github.rest.issues.createComment({
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: issue_number,
@@ -92,19 +92,3 @@ jobs:
         with:
           s1: 'Freddy'
           s2: 'Kristiansen'
-
-      - uses: actions/github-script@v3
-        with:
-          github-token: ${{secrets.GITHUB_TOKEN}}
-          script: |
-            var fs = require('fs');
-            var issue_number = Number(fs.readFileSync('issue_number'));
-            console.log('test1')
-            console.log(issue_number)
-            console.log('test2')
-            await github.issues.createComment({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: issue_number,
-              body: '# HELLO WORLD'
-            });
