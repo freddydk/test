@@ -47,8 +47,8 @@ jobs:
           Write-Host $location
           $prfolder = [GUID]::NewGuid().ToString()
           Write-Host "::set-output name=prfolder::$prfolder"
-          Expand-Archive -Path ".\\pr.zip" -DestinationPath ".\\$prfolder"
-          Remove-Item -Path ".\\pr.zip" -force
+          Expand-Archive -Path ".\pr.zip" -DestinationPath ".\$prfolder"
+          Remove-Item -Path ".\pr.zip" -force
 
       - uses: actions/checkout@v2
 
