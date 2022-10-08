@@ -43,7 +43,7 @@ jobs:
             }
             Copy-Item -Path $path -Destination $newfolder
           }
-          Set-Content -path (Join-Path $prPath "issue_number") -value '${{ github.event.number }}'
+          Set-Content -path (Join-Path $prPath "issue_number") -value '${{ github.event.number }}' -NoNewLine
 
       - uses: actions/github-script@v6
         if: github.event_name == 'pull_requestx'
