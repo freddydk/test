@@ -76,6 +76,9 @@ jobs:
           script: |
             var fs = require('fs');
             var issue_number = Number(fs.readFileSync('issue_number'));
+            console.log('test1')
+            console.log(issue_number)
+            console.log('test2')
             github.rest.issues.createComment({
               issue_number: issue.number,
               owner: context.repo.owner,
