@@ -26,10 +26,23 @@ jobs:
           $url = "$($ENV:GITHUB_API_URL)/repos/$($ENV:GITHUB_REPOSITORY)/compare/$($ghEvent.pull_request.base.sha)...$($ENV:GITHUB_SHA)"
           $response = Invoke-WebRequest -UseBasicParsing -Headers $headers -Uri $url | ConvertFrom-Json
           $filesChanged = @($response.files | ForEach-Object { $_.filename })
-          $filesChanged | out-host
+          $location = (Get-Location).path
+          Write-Host "Files Changed:"
+          $filesChanged | ForEach-Object {
+            Write-Host "- $_"
+            $path = Join-Path $location $_
+            $newPath = Join-Path (Join-Path $location "PR") $_
+            $newfolder = [System.IO.Path]::GetDirectory($newpath)
+            if (-not (Test-Path $newfolder)) {
+              New-Item $newfolder -ItemType Directory | Out-Null
+            }
+            Write-Host "from $path"
+            Write-Host "to $newfolder"
+            Copy-Item -Path $path -Destination $newfolder
+          }
 
       - uses: actions/github-script@v6
-        if: github.event_name == 'pull_request'
+        if: github.event_name == 'pull_requestx'
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
