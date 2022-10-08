@@ -19,7 +19,7 @@ jobs:
         run: |
           $ErrorActionPreference = "STOP"
           $headers = @{             
-              "Authorization" = "token $ENV:GITHUB_TOKEN"
+              "Authorization" = 'token ${{ secrets.GITHUB_TOKEN }}'
               "Accept" = "application/vnd.github.baptiste-preview+json"
           }
           $headers | Out-Host
