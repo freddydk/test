@@ -76,6 +76,29 @@ jobs:
           script: |
             var fs = require('fs');
             var issue_number = Number(fs.readFileSync('issue_number'));
+            console.log('test1');
+            console.log(issue_number);
+            console.log('test2');
+            var result = await github.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: issue_number,
+              body: '# HELLO WORLD'
+            });
+            console.log(result);
+
+      - name: Test
+        uses: freddydk/Test/Action@main
+        with:
+          s1: 'Freddy'
+          s2: 'Kristiansen'
+
+      - uses: actions/github-script@v3
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          script: |
+            var fs = require('fs');
+            var issue_number = Number(fs.readFileSync('issue_number'));
             console.log('test1')
             console.log(issue_number)
             console.log('test2')
@@ -85,9 +108,3 @@ jobs:
               issue_number: issue_number,
               body: '# HELLO WORLD'
             });
-
-      - name: Test
-        uses: freddydk/Test/Action@main
-        with:
-          s1: 'Freddy'
-          s2: 'Kristiansen'
