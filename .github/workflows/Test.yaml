@@ -23,7 +23,7 @@ jobs:
           }
           $ghEvent = Get-Content $ENV:GITHUB_EVENT_PATH -encoding UTF8 | ConvertFrom-Json
           $url = "$($ENV:GITHUB_API_URL)/repos/$($ENV:GITHUB_REPOSITORY)/compare/$($ghEvent.pull_request.base.sha)...$($ENV:GITHUB_SHA)"
-          $response = InvokeWebRequest -Headers $headers -Uri $url | ConvertFrom-Json
+          $response = Invoke-WebRequest -UseBasicParsing -Headers $headers -Uri $url | ConvertFrom-Json
           $filesChanged = @($response.files | ForEach-Object { $_.filename })
           $filesChanges | out-host
 
