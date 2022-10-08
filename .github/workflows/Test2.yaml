@@ -37,8 +37,7 @@ jobs:
                archive_format: 'zip',
             });
             var fs = require('fs');
-            echo '${{ github.workspace}}'
-            fs.writeFileSync('${{ github.workspace}}\pr.zip', Buffer.from(download.data));
+            fs.writeFileSync('${{ github.workspace }}\pr.zip', Buffer.from(download.data));
 
       - name: Unpack Pull Request Files
         id: ChangeFiles
