@@ -79,7 +79,7 @@ jobs:
           script: |
             var fs = require('fs');
             var issue_number = Number(fs.readFileSync('issue_number'));
-            var response = await github.rest.issues.CreateComment({
+            var response = await github.rest.issues.createComment({
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: issue_number,
@@ -103,7 +103,7 @@ jobs:
             var fs = require('fs');
             var comment_id = Number('${{ steps.CreateComment.outputs.comment_id }}')
             var issue_number = Number(fs.readFileSync('issue_number'));
-            var response = await github.rest.issues.UpdateComment({
+            var response = await github.rest.issues.updateComment({
               owner: context.repo.owner,
               repo: context.repo.repo,
               comment_id: comment_id,
