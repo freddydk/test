@@ -31,17 +31,14 @@ jobs:
         with:
           script: |
             var run_id = Number('${{ github.event.workflow_run.id }}');
-            console.log(run_id);
             var artifacts = await github.rest.actions.listWorkflowRunArtifacts({
                owner: context.repo.owner,
                repo: context.repo.repo,
                run_id: run_id
             });
-            console.log('2')
-            console.log(artifacts.toString())
-            console.log(artifacts)
-            console.log('2a')
-            var matchArtifact = artifacts.filter(name == 'Pull_Request_Files')[0];
+            var matchArtifact = artifacts.data.artifacts.filter((artifact) => {
+              return artifact.name == 'Pull_Request_Files'
+            })[0];
             console.log('3')
             var download = await github.rest.actions.downloadArtifact({
                owner: context.repo.owner,

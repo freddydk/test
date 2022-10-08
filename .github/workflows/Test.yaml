@@ -50,13 +50,13 @@ jobs:
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
-            console.log(context.issue.number);
-            github.rest.issues.createComment({
+            var response = await github.rest.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
               body: '# Test\n```mermaid\npie\n    title Pie Chart\n    "Dogs" : 386\n    "Cats" : 85\n    "Rats" : 150\n```'
             })
+            console.log(response)
 
       - uses: actions/upload-artifact@v2
         with:
