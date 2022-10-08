@@ -65,7 +65,7 @@ jobs:
             var response = await github.rest.checks.listSuitesForRef({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              ref: context.ref
+              ref: context.sha
             })
             console.log(response)
 
