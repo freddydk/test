@@ -18,6 +18,14 @@ jobs:
       github.event.workflow_run.conclusion == 'success'
 
     steps:
+      - name: Foldername
+        id: FolderName
+        run: |
+          $prfolder = [GUID]::NewGuid().ToString()
+          Write-Host "::set-output name=prfolder::$prfolder"
+
+      - uses: actions/checkout@v2
+
       - name: 'Download artifact'
         uses: actions/github-script@v3.1.0
         with:
@@ -37,24 +45,21 @@ jobs:
                archive_format: 'zip',
             });
             var fs = require('fs');
-            fs.writeFileSync('pr.zip', Buffer.from(download.data));
+            fs.writeFileSync('${{ steps.FolderName.outputs.prfolder }}.zip', Buffer.from(download.data));
 
       - name: Unpack Pull Request Files
         id: ChangedFiles
         run: |
           $ErrorActionPreference = "STOP"
           $location = (Get-Location).path
-          $prfolder = [GUID]::NewGuid().ToString()
-          Write-Host "::set-output name=prfolder::$prfolder"
-          Expand-Archive -Path ".\pr.zip" -DestinationPath ".\$prfolder"
-          Remove-Item -Path ".\pr.zip" -force
-
-      - uses: actions/checkout@v2
+          $prfolder = '${{ steps.FolderName.outputs.prfolder }}'
+          Expand-Archive -Path ".\$prfolder.zip" -DestinationPath ".\$prfolder"
+          Remove-Item -Path ".\prfolder.zip" -force
 
       - name: Add Pull Request Files
         run: |
           $ErrorActionPreference = "STOP"
-          $prfolder = '${{ steps.ChangedFiles.outputs.prfolder }}'
+          $prfolder = '${{ steps.FolderName.outputs.prfolder }}'
           Get-ChildItem -Path $prfolder | ForEach-Object {
             Write-Host $_.FullName
             $newPath = $_.replace("$prfolder\\","")
