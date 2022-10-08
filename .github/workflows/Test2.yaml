@@ -70,7 +70,7 @@ jobs:
             Copy-Item $_.FullName -Destination $newFolder -Force
           }
 
-      - uses: actions/github-script@v6
+      - uses: actions/github-script@v3
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
@@ -79,12 +79,12 @@ jobs:
             console.log('test1')
             console.log(issue_number)
             console.log('test2')
-            github.rest.issues.createComment({
-              issue_number: issue.number,
+            await github.issues.createComment({
               owner: context.repo.owner,
               repo: context.repo.repo,
+              issue_number: issue_number,
               body: '# HELLO WORLD'
-            })
+            });
 
       - name: Test
         uses: freddydk/Test/Action@main
