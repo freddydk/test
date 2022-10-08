@@ -13,9 +13,19 @@ jobs:
     runs-on: windows-latest
 
     steps:
+      - uses: actions/checkout@v2
+      
       - name: inline
         run: |
-          Write-Host "::warning file=.github/workflows/Test.yaml::This is a warning"
+          $headers = @{             
+              "Authorization" = "token $env:GITHUB_TOKEN"
+              "Accept" = "application/vnd.github.baptiste-preview+json"
+          }
+          $ghEvent = Get-Content $ENV:GITHUB_EVENT_PATH -encoding UTF8 | ConvertFrom-Json
+          $url = "$($ENV:GITHUB_API_URL)/repos/$($ENV:GITHUB_REPOSITORY)/compare/$($ghEvent.pull_request.base.sha)...$($ENV:GITHUB_SHA)"
+          $response = InvokeWebRequest -Headers $headers -Uri $url | ConvertFrom-Json
+          $filesChanged = @($response.files | ForEach-Object { $_.filename })
+          $filesChanges | out-host
 
       - uses: actions/github-script@v6
         if: github.event_name == 'pull_request'
@@ -35,7 +45,12 @@ jobs:
           s1: 'Freddy'
           s2: 'Kristiansen'
 
-      - name: Store
+      - name: Save PR number
         run: |
-          Write-Host '${{ github.event.number }}'
-          Set-Content -path ".\NR" -value '${{ github.event.number }}'
+          mkdir -p ./pr
+          echo ${{ github.event.number }} > ./pr/NR
+
+      - uses: actions/upload-artifact@v2
+        with:
+          name: pr
+          path: pr/
