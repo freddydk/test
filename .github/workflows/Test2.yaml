@@ -54,7 +54,7 @@ jobs:
           $location = (Get-Location).path
           $prfolder = '${{ steps.FolderName.outputs.prfolder }}'
           Expand-Archive -Path ".\$prfolder.zip" -DestinationPath ".\$prfolder"
-          Remove-Item -Path ".\prfolder.zip" -force
+          Remove-Item -Path ".\$prfolder.zip" -force
 
       - name: Add Pull Request Files
         run: |
