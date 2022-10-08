@@ -30,11 +30,12 @@ jobs:
         uses: actions/github-script@v6
         with:
           script: |
-            var run_id = Number('${{github.event.workflow_run.id }}')
+            var run_id = Number('${{github.event.workflow_run.id }}');
+            console.log(run_id);
             var artifacts = github.rest.actions.listWorkflowRunArtifacts({
                owner: context.repo.owner,
                repo: context.repo.repo,
-               run_id: run_id,
+               run_id: run_id
             });
             var matchArtifact = artifacts.data.artifacts.filter((artifact) => {
               return artifact.name == "Pull_Request_Files"
@@ -43,7 +44,7 @@ jobs:
                owner: context.repo.owner,
                repo: context.repo.repo,
                artifact_id: matchArtifact.id,
-               archive_format: 'zip',
+               archive_format: 'zip'
             });
             var fs = require('fs');
             fs.writeFileSync('${{ steps.FolderName.outputs.prfolder }}.zip', Buffer.from(download.data));
