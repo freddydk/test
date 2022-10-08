@@ -38,9 +38,7 @@ jobs:
                run_id: run_id
             });
             console.log('2')
-            console.log(artifacts.total_count);
-            console.log('2a')
-            var matchArtifact = artifacts.artifacts.filter(artifact.name == "Pull_Request_Files")[0];
+            var matchArtifact = artifacts.filter(name == "Pull_Request_Files")[0];
             console.log('3')
             var download = github.rest.actions.downloadArtifact({
                owner: context.repo.owner,
