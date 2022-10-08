@@ -56,7 +56,7 @@ jobs:
               repo: context.repo.repo,
               body: '# Test\n```mermaid\npie\n    title Pie Chart\n    "Dogs" : 386\n    "Cats" : 85\n    "Rats" : 150\n```'
             })
-            console.log(response)
+            console.log(response.data.id)
 
       - uses: actions/upload-artifact@v2
         with:

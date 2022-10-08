@@ -39,14 +39,12 @@ jobs:
             var matchArtifact = artifacts.data.artifacts.filter((artifact) => {
               return artifact.name == 'Pull_Request_Files'
             })[0];
-            console.log('3')
             var download = await github.rest.actions.downloadArtifact({
                owner: context.repo.owner,
                repo: context.repo.repo,
                artifact_id: matchArtifact.id,
                archive_format: 'zip'
             });
-            console.log('4')
             var fs = require('fs');
             fs.writeFileSync('${{ steps.FolderName.outputs.prfolder }}.zip', Buffer.from(download.data));
 
@@ -73,25 +71,46 @@ jobs:
             Copy-Item $_.FullName -Destination $newFolder -Force
           }
 
-      - uses: actions/github-script@v6
+      - name: Create Comment
+        id: CreateComment
+        uses: actions/github-script@v6
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
             var fs = require('fs');
             var issue_number = Number(fs.readFileSync('issue_number'));
-            console.log('test1');
-            console.log(issue_number);
-            console.log('test2');
-            var response = github.rest.issues.createComment({
+            var response = await github.rest.issues.CreateComment({
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: issue_number,
               body: '# HELLO WORLD'
             });
-            console.log(response.id);
+            console.log(response);
+            console.log(response.data.id);
+            core.setOutput('comment_id', response.data.id);
 
       - name: Test
         uses: freddydk/Test/Action@main
         with:
           s1: 'Freddy'
           s2: 'Kristiansen'
+
+      - name: Update Comment
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          script: |
+            var fs = require('fs');
+            var comment_id = Number('${{ steps.CreateComment.outputs.comment_id }}')
+            var issue_number = Number(fs.readFileSync('issue_number'));
+            var response = await github.rest.issues.UpdateComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              comment_id: comment_id,
+              issue_number: issue_number,
+              body: '# HELLO WORLD\n## HI AGAIN'
+            });
+            console.log(response);
+            console.log(response.data.id);
+            core.setOutput('comment_id', response.data.id);
+
