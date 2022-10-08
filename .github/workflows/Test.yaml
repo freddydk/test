@@ -15,7 +15,8 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       
-      - name: inline
+      - name: Determine Changed Files
+        id: ChangedFiles
         run: |
           $ErrorActionPreference = "STOP"
           $headers = @{             
@@ -27,19 +28,22 @@ jobs:
           $response = Invoke-WebRequest -UseBasicParsing -Headers $headers -Uri $url | ConvertFrom-Json
           $filesChanged = @($response.files | ForEach-Object { $_.filename })
           $location = (Get-Location).path
+          $prfolder = [GUID]::NewGuid().ToString()
+          Write-Host "::set-output name=prfolder::$prfolder"
+          $prPath = Join-Path $location $prFolder
+          New-Item -Path $prPath -ItemType Directory | Out-Null
           Write-Host "Files Changed:"
           $filesChanged | ForEach-Object {
             Write-Host "- $_"
             $path = Join-Path $location $_
-            $newPath = Join-Path (Join-Path $location "PR") $_
+            $newPath = Join-Path $prPath $_
             $newfolder = [System.IO.Path]::GetDirectoryName($newpath)
             if (-not (Test-Path $newfolder)) {
               New-Item $newfolder -ItemType Directory | Out-Null
             }
-            Write-Host "from $path"
-            Write-Host "to $newfolder"
             Copy-Item -Path $path -Destination $newfolder
           }
+          Set-Content -path (Join-Path $prPath "issue_number") -value '${{ github.event.number }}'
 
       - uses: actions/github-script@v6
         if: github.event_name == 'pull_requestx'
@@ -53,18 +57,7 @@ jobs:
               body: '# Test\n```mermaid\npie\n    title Pie Chart\n    "Dogs" : 386\n    "Cats" : 85\n    "Rats" : 150\n```'
             })
 
-      - name: Test
-        uses: freddydk/Test/Action@main
-        with:
-          s1: 'Freddy'
-          s2: 'Kristiansen'
-
-      - name: Save PR number
-        run: |
-          mkdir -p ./pr
-          echo ${{ github.event.number }} > ./pr/NR
-
       - uses: actions/upload-artifact@v2
         with:
-          name: pr
-          path: pr/
+          name: Pull_Request_Files
+          path: '${{ steps.ChangedFiles.outputs.prfolder }}/'
