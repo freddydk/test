@@ -62,7 +62,7 @@ jobs:
           $prfolder = '${{ steps.FolderName.outputs.prfolder }}'
           Get-ChildItem -Path $prfolder | ForEach-Object {
             Write-Host $_.FullName
-            $newPath = $_.replace("$prfolder\\","")
+            $newPath = $_.FullName.Replace("$prfolder\\","")
             Write-Host $newPath
             $newFolder = [System.IO.Path]::GetDirectoryName($newPath)
             if (-not (Test-Path $newFolder)) {
