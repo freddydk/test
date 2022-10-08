@@ -45,6 +45,7 @@ jobs:
           $ErrorActionPreference = "STOP"
           $location = (Get-Location).path
           Write-Host $location
+          Get-ChildItem $location | % { $_.FullName }
           $prfolder = [GUID]::NewGuid().ToString()
           Write-Host "::set-output name=prfolder::$prfolder"
           Expand-Archive -Path ".\pr.zip" -DestinationPath ".\$prfolder"
