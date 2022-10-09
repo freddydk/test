@@ -107,6 +107,10 @@ jobs:
           s1: 'Freddy'
           s2: 'Kristiansen'
 
+      - name: Sleep
+        run: |
+          Start-Sleep -seconds 15
+
       - name: Update Comment
         uses: actions/github-script@v6
         with:
