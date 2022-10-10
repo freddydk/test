@@ -1,4 +1,4 @@
-name: RunNumber
+name: TestResults
 
 on:
   workflow_dispatch:
