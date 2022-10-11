@@ -191,3 +191,18 @@ jobs:
               comment_id: comment_id,
               body: body.concat('### This is an extra line\n'),
             });
+
+      - name: Update Check
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            console.log('${{ github.event.workflow_run.head_sha }}');
+            console.log('${{ steps.CreateCheck.outputs.check_run_id }}');
+            var response = await github.rest.checks.update({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              check_run_id: ${{ steps.CreateCheck.outputs.check_run_id }},
+              status: 'completed'
+            });
+            console.log(response);
