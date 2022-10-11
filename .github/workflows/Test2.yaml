@@ -33,7 +33,8 @@ jobs:
             console.log(response);
             core.setOutput('check_run_id', response.data.id);
 
-            do {
+            var in_progress = true
+            while (in_progress) {
               console.log('list suites');
               var response = await github.rest.checks.listSuitesForRef({
                 owner: context.repo.owner,
@@ -41,15 +42,17 @@ jobs:
                 ref: '${{ github.event.workflow_run.head_sha }}'
               })
               console.log(response.data.check_suites);
-              var in_progress = response.data.check_suites.filter((suite) => {
-                return suite.status == 'in_progress';
+              in_progress = false
+              response.data.check_suites.forEach((suite) => {
+                if (suite.status == 'in_progress') {
+                  in_progress = true
+                };
               })
               if (in_progress) {
                 console.log('in_progress');
                 await new Promise(r => setTimeout(r, 2000));
               }
             }
-            while (in_progress);
 
       - uses: actions/checkout@v2
 
