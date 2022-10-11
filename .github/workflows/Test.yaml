@@ -58,12 +58,12 @@ jobs:
             })
             console.log(response.data.id)
 
-      - name: List Check Suites
+      - name: List Checks
         uses: actions/github-script@v6
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            var response = await github.rest.checks.listSuitesForRef({
+            var response = await github.rest.checks.listForRef({
               owner: context.repo.owner,
               repo: context.repo.repo,
               ref: context.sha
