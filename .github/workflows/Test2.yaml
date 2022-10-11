@@ -25,7 +25,7 @@ jobs:
 
       - name: SUMMARY
         run: |
-          Add-Content -path $ENV:GITHUB_STEP_SUMMARY -value "# CHART`n`n```mermaid`npie`n    title Pie Chart`n    "Dogs" : 386`n    "Cats" : 85`n    "Rats" : 150 `n````n"
+          Add-Content -path $ENV:GITHUB_STEP_SUMMARY -value "# CHART`n`n```mermaid`npie`n    title Pie Chart`n    ""Dogs"" : 386`n    ""Cats"" : 85`n    ""Rats"" : 150 `n````n"
 
       - name: Publish Test Report
         uses: mikepenz/action-junit-report@v3.5.1
