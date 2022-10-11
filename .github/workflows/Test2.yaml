@@ -44,7 +44,7 @@ jobs:
               console.log(response.data.check_suites);
               in_progress = false
               response.data.check_suites.forEach((suite) => {
-                if (suite.status == 'in_progress') {
+                if (suite.conclusion == null) {
                   in_progress = true
                 };
               })
