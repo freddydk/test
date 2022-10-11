@@ -48,8 +48,8 @@ jobs:
         if: always()
         with:
           commit: ${{github.event.workflow_run.head_sha}}
-          report_paths: './TestResult.xml'
-          fail_on_failure: true
+          report_paths: './TestResults.xml'
+          require_tests: true
 
       - name: 'Download artifact'
         uses: actions/github-script@v6
