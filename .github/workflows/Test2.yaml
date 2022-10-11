@@ -56,14 +56,27 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
+            console.log('${{github.event.workflow_run.head_sha}}');
             var response = await github.rest.checks.listForRef({
               owner: context.repo.owner,
               repo: context.repo.repo,
               ref: ${{github.event.workflow_run.head_sha}},
               filter: 'all',
               status: 'in_progress'
+            });
+            console.log(response);
+
+      - name: List Check Suites
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            var response = await github.rest.checks.listSuitesForRef({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: ${{github.event.workflow_run.head_sha}},
             })
-            console.log(response)
+            console.log(response.data.check_suites)
 
       - name: 'Download artifact'
         uses: actions/github-script@v6
@@ -127,18 +140,6 @@ jobs:
             console.log(response);
             console.log(response.data.id);
             core.setOutput('comment_id', response.data.id);
-
-      - name: List Check Suites
-        uses: actions/github-script@v6
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            var response = await github.rest.checks.listSuitesForRef({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              ref: context.ref
-            })
-            console.log(response.data.check_suites)
 
       - name: Test
         uses: freddydk/Test/Action@main
