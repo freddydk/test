@@ -21,16 +21,35 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            console.log('${{github.event.workflow_run.head_sha}}');
+            console.log('${{ github.event.workflow_run.head_sha }}');
             var response = await github.rest.checks.create({
               owner: context.repo.owner,
               repo: context.repo.repo,
               name: 'CI/CD',
-              head_sha: '${{github.event.workflow_run.head_sha}}',
-              status: 'queued'
+              head_sha: '${{ github.event.workflow_run.head_sha }}',
+              status: 'queued',
+              details_url: context.serverUrl.concat('/',context.repo,'/actions/runs/',context.runId)
             });
             console.log(response);
             core.setOutput('check_run_id', response.data.id);
+
+            do {
+              console.log('list suites');
+              var response = await github.rest.checks.listSuitesForRef({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                ref: '${{ github.event.workflow_run.head_sha }}'
+              })
+              console.log(response.data.suites);
+              var in_progress = response.data.check_suites((suite) => {
+                return suite.status == 'in_progress';
+              })
+              if (in_progress) {
+                console.log('in_progress');
+                await new Promise(r => setTimeout(r, 2000));
+              }
+            }
+            while (in_progress);
 
       - uses: actions/checkout@v2
 
