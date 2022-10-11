@@ -46,7 +46,10 @@ jobs:
               response.data.check_suites.forEach((suite) => {
                 if (suite.conclusion == null) {
                   in_progress = true
-                };
+                }
+                else if (suite.conclusion != 'success') {
+                  core.setFailed('Other checks failed.')
+                }
               })
               if (in_progress) {
                 console.log('in_progress');
