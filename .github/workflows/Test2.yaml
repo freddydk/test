@@ -34,6 +34,22 @@ jobs:
           commit: ${{github.event.workflow_run.head_sha}}
           report_paths: './TestResults.xml'
           require_tests: true
+          job_summary: false
+
+      - name: Create Check
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            console.log('${{github.event.workflow_run.head_sha}}');
+            var response = await github.rest.checks.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              name: 'CI/CD',
+              head_sha: '${{github.event.workflow_run.head_sha}}',
+              status: 'queued'
+            });
+            console.log(response);
 
       - name: List Check Suites
         uses: actions/github-script@v6
