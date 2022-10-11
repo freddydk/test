@@ -1,7 +1,6 @@
 ﻿Write-Host "BönæøåÆØÅ"
 Write-Host "BönæøåÆØÅ".Length
 
-
 $testSecret = '${{ secrets.TESTSECRET }}'
 Write-Host $testSecret
 Write-Host $testSecret.Length
