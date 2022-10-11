@@ -79,7 +79,7 @@ jobs:
               filter: 'all',
               status: 'in_progress'
             });
-            console.log(response);
+            console.log(response.data.check_runs)
 
       - name: Update Check
         uses: actions/github-script@v6
