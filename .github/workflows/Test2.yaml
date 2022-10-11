@@ -22,13 +22,15 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             console.log('${{ github.event.workflow_run.head_sha }}');
+            var details_url = context.serverUrl.concat('/',context.repo.owner,'/',context.repo.repo,'/actions/runs/',context.runId)
+            console.log(details_url)
             var response = await github.rest.checks.create({
               owner: context.repo.owner,
               repo: context.repo.repo,
               name: 'CI/CD',
               head_sha: '${{ github.event.workflow_run.head_sha }}',
               status: 'queued',
-              details_url: context.serverUrl.concat('/',context.repo.owner,'/',context.repo.repo,'/actions/runs/',context.runId)
+              details_url: details_url
             });
             console.log(response);
             core.setOutput('check_run_id', response.data.id);

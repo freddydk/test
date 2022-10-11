@@ -68,9 +68,13 @@ jobs:
             var response = await github.rest.checks.listForRef({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              ref: context.sha,
-              filter: 'all',
-              status: 'in_progress'
+              ref: context.sha
+            })
+            console.log(response)
+            var response = await github.rest.checks.listSuitesForRef({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: context.sha
             })
             console.log(response)
 
