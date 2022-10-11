@@ -57,6 +57,7 @@ jobs:
               repo: context.repo.repo,
               body: '# Test\n```mermaid\npie\n    title Pie Chart\n    "Dogs" : 386\n    "Cats" : 85\n    "Rats" : 150\n```'
             })
+            await new Promise(r => setTimeout(r, 30000));
             console.log(response.data.id)
 
       - name: List Checks
@@ -78,4 +79,3 @@ jobs:
         with:
           name: Pull_Request_Files
           path: '${{ steps.ChangedFiles.outputs.prfolder }}/'
-
