@@ -47,6 +47,7 @@ jobs:
 
       - name: Create Comment
         uses: actions/github-script@v6
+        if: false
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
