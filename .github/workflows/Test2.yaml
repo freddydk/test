@@ -39,10 +39,11 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
+            console.log('${{github.event.workflow_run.head_sha}}');
             var response = await github.rest.checks.listSuitesForRef({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              ref: ${{github.event.workflow_run.head_sha}},
+              ref: context.ref,
             })
             console.log(response.data.check_suites)
 
@@ -55,7 +56,7 @@ jobs:
             var response = await github.rest.checks.listForRef({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              ref: ${{github.event.workflow_run.head_sha}},
+              ref: '${{github.event.workflow_run.head_sha}}',
               filter: 'all',
               status: 'in_progress'
             });
