@@ -4,7 +4,7 @@ on:
   workflow_run:
     workflows: ["Test"]
     types:
-      - completed
+      - in_progress
 
 defaults:
   run:
@@ -23,6 +23,10 @@ jobs:
         run: |
           $prfolder = [GUID]::NewGuid().ToString()
           Write-Host "::set-output name=prfolder::$prfolder"
+
+      - name: SUMMARY
+        run: |
+          Add-Content -path $ENV:GITHUB_STEP_SUMMARY -value "# CHART`n`n```mermaid`npie`n    title Pie Chart`n    "Dogs" : 386`n    "Cats" : 85`n    "Rats" : 150 `n````n""
 
       - uses: actions/checkout@v2
 
