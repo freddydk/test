@@ -30,7 +30,7 @@ jobs:
               status: 'queued'
             });
             console.log(response);
-            Write-Host "::set-output name=checkRunId::$($response.data.id))"
+            core.setOutput('check_run_id', response.data.id);
 
       - uses: actions/checkout@v2
 
@@ -59,11 +59,11 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             console.log('${{ github.event.workflow_run.head_sha }}');
-            console.log('${{ steps.CreateCheck.outputs.checkRunId }}');
+            console.log('${{ steps.CreateCheck.outputs.check_run_id }}');
             var response = await github.rest.checks.create({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              check_run_id: ${{ steps.CreateCheck.outputs.checkRunId }}
+              check_run_id: ${{ steps.CreateCheck.outputs.check_run_id }}
               status: 'in_progress'
             });
             console.log(response);
