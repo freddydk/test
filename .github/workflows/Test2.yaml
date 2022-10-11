@@ -92,7 +92,8 @@ jobs:
         with:
           script: |
             var run_id = Number('${{ github.event.workflow_run.id }}');
-            var found = false
+            console.log(run_id);
+            var found = false;
             do {
               var artifacts = await github.rest.actions.listWorkflowRunArtifacts({
                  owner: context.repo.owner,
@@ -104,7 +105,7 @@ jobs:
               });
               if (artifacts) {
                 matchArtifact = artifacts[0];
-                consoole.log('found');
+                console.log('found');
                 found = true;
               }
               else {
