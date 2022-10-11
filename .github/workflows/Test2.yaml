@@ -109,7 +109,8 @@ jobs:
               else {
                 await new Promise(r => setTimeout(r, 5000));
               }
-            while {!found}
+            }
+            while (!found)
             var download = await github.rest.actions.downloadArtifact({
                owner: context.repo.owner,
                repo: context.repo.repo,
