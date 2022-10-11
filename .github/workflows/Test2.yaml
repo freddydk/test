@@ -11,6 +11,23 @@ defaults:
     shell: PowerShell
 
 jobs:
+  TestReport:
+    runs-on: ubuntu-latest
+    if: >
+      github.event.workflow_run.event == 'pull_request' &&
+      github.event.workflow_run.conclusion == 'success'
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Publish Test Report
+        uses: mikepenz/action-junit-report@v3
+        if: always()
+        with:
+          commit: ${{github.event.workflow_run.head_sha}}
+          report_paths: './TestResult.xml'
+          fail_on_failure: true
+
   Testjob:
     runs-on: windows-latest
     if: >
