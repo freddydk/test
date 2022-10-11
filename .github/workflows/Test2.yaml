@@ -51,6 +51,20 @@ jobs:
           report_paths: './TestResults.xml'
           require_tests: true
 
+      - name: List Checks
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            var response = await github.rest.checks.listForRef({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: ${{github.event.workflow_run.head_sha}},
+              filter: 'all',
+              status: 'in_progress'
+            })
+            console.log(response)
+
       - name: 'Download artifact'
         uses: actions/github-script@v6
         with:
