@@ -40,8 +40,8 @@ jobs:
                 repo: context.repo.repo,
                 ref: '${{ github.event.workflow_run.head_sha }}'
               })
-              console.log(response.data.suites);
-              var in_progress = response.data.check_suites((suite) => {
+              console.log(response.data.check_suites);
+              var in_progress = response.data.check_suites.filter((suite) => {
                 return suite.status == 'in_progress';
               })
               if (in_progress) {
