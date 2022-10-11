@@ -13,9 +13,6 @@ defaults:
 jobs:
   Testjob:
     runs-on: windows-latest
-    if: >
-      github.event.workflow_run.event == 'pull_request' &&
-      github.event.workflow_run.conclusion == 'success'
 
     steps:
       - name: Foldername
