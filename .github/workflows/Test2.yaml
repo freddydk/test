@@ -53,21 +53,6 @@ jobs:
           require_tests: true
           job_summary: false
 
-      - name: Update Check
-        uses: actions/github-script@v6
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            console.log('${{ github.event.workflow_run.head_sha }}');
-            console.log('${{ steps.CreateCheck.outputs.check_run_id }}');
-            var response = await github.rest.checks.create({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              check_run_id: ${{ steps.CreateCheck.outputs.check_run_id }}
-              status: 'in_progress'
-            });
-            console.log(response);
-
       - name: List Check Suites
         uses: actions/github-script@v6
         with:
@@ -92,6 +77,21 @@ jobs:
               repo: context.repo.repo,
               ref: '${{github.event.workflow_run.head_sha}}',
               filter: 'all',
+              status: 'in_progress'
+            });
+            console.log(response);
+
+      - name: Update Check
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            console.log('${{ github.event.workflow_run.head_sha }}');
+            console.log('${{ steps.CreateCheck.outputs.check_run_id }}');
+            var response = await github.rest.checks.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              check_run_id: ${{ steps.CreateCheck.outputs.check_run_id }},
               status: 'in_progress'
             });
             console.log(response);
