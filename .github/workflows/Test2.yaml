@@ -4,7 +4,7 @@ on:
   workflow_run:
     workflows: ["Test"]
     types:
-      - completed
+      - in_progress
 
 defaults:
   run:
@@ -97,7 +97,7 @@ jobs:
                repo: context.repo.repo,
                run_id: run_id
             });
-            var matchArtifacts = artifacts.data.artifacts.filter((artifact) => {
+            var matchArtifact = artifacts.data.artifacts.filter((artifact) => {
               return artifact.name == 'Pull_Request_Files';
             })[0];
             var download = await github.rest.actions.downloadArtifact({
