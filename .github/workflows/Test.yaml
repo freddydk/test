@@ -64,7 +64,9 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            await new Promise(r => setTimeout(r, 60000));
+            console.log('wait 5 minutes');
+            await new Promise(r => setTimeout(r, 300000));
+            console.log('continue');
             var response = await github.rest.checks.listForRef({
               owner: context.repo.owner,
               repo: context.repo.repo,
