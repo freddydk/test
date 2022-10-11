@@ -4,7 +4,7 @@ on:
   workflow_run:
     workflows: ["Test"]
     types:
-      - in_progress
+      - completed
 
 defaults:
   run:
@@ -92,29 +92,14 @@ jobs:
         with:
           script: |
             var run_id = Number('${{ github.event.workflow_run.id }}');
-            console.log(run_id);
-            var found = false;
-            do {
-              var artifacts = await github.rest.actions.listWorkflowRunArtifacts({
-                 owner: context.repo.owner,
-                 repo: context.repo.repo,
-                 run_id: run_id
-              });
-              var artifacts = artifacts.data.artifacts.filter((artifact) => {
-                return artifact.name == 'Pull_Request_Files';
-              });
-              if (artifacts) {
-                matchArtifact = artifacts[0];
-                console.log('found');
-                found = true;
-              }
-              else {
-                console.log('wait');
-                await new Promise(r => setTimeout(r, 5000));
-              }
-            }
-            while (!found)
-            console.log(matchArtifact);
+            var artifacts = await github.rest.actions.listWorkflowRunArtifacts({
+               owner: context.repo.owner,
+               repo: context.repo.repo,
+               run_id: run_id
+            });
+            var matchArtifacts = artifacts.data.artifacts.filter((artifact) => {
+              return artifact.name == 'Pull_Request_Files';
+            })[0];
             var download = await github.rest.actions.downloadArtifact({
                owner: context.repo.owner,
                repo: context.repo.repo,
