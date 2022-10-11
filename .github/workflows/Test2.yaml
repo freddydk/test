@@ -28,7 +28,7 @@ jobs:
               name: 'CI/CD',
               head_sha: '${{ github.event.workflow_run.head_sha }}',
               status: 'queued',
-              details_url: context.serverUrl.concat('/',context.repo,'/actions/runs/',context.runId)
+              details_url: context.serverUrl.concat('/',context.repo.owner,'/',context.repo.repo,'/actions/runs/',context.runId)
             });
             console.log(response);
             core.setOutput('check_run_id', response.data.id);
