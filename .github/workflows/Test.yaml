@@ -57,7 +57,6 @@ jobs:
               repo: context.repo.repo,
               body: '# Test\n```mermaid\npie\n    title Pie Chart\n    "Dogs" : 386\n    "Cats" : 85\n    "Rats" : 150\n```'
             })
-            await new Promise(r => setTimeout(r, 30000));
             console.log(response.data.id)
 
       - name: List Checks
@@ -65,6 +64,7 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
+            await new Promise(r => setTimeout(r, 60000));
             var response = await github.rest.checks.listForRef({
               owner: context.repo.owner,
               repo: context.repo.repo,
