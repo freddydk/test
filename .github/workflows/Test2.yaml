@@ -203,6 +203,8 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               check_run_id: ${{ steps.CreateCheck.outputs.check_run_id }},
-              status: 'completed'
+              status: 'completed',
+              conclusion: 'success'
+
             });
             console.log(response);
