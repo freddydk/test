@@ -15,6 +15,23 @@ jobs:
     runs-on: windows-latest
 
     steps:
+      - name: Create Check
+        id: CreateCheck
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            console.log('${{github.event.workflow_run.head_sha}}');
+            var response = await github.rest.checks.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              name: 'CI/CD',
+              head_sha: '${{github.event.workflow_run.head_sha}}',
+              status: 'queued'
+            });
+            console.log(response);
+            Write-Host "::set-output name=checkRunId::$($response.data.id))"
+
       - uses: actions/checkout@v2
 
       - name: Foldername
@@ -36,18 +53,18 @@ jobs:
           require_tests: true
           job_summary: false
 
-      - name: Create Check
+      - name: Update Check
         uses: actions/github-script@v6
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            console.log('${{github.event.workflow_run.head_sha}}');
+            console.log('${{ github.event.workflow_run.head_sha }}');
+            console.log('${{ steps.CreateCheck.outputs.checkRunId }}');
             var response = await github.rest.checks.create({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              name: 'CI/CD',
-              head_sha: '${{github.event.workflow_run.head_sha}}',
-              status: 'queued'
+              check_run_id: ${{ steps.CreateCheck.outputs.checkRunId }}
+              status: 'in_progress'
             });
             console.log(response);
 
