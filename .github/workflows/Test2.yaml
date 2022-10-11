@@ -88,7 +88,7 @@ jobs:
           script: |
             console.log('${{ github.event.workflow_run.head_sha }}');
             console.log('${{ steps.CreateCheck.outputs.check_run_id }}');
-            var response = await github.rest.checks.create({
+            var response = await github.rest.checks.update({
               owner: context.repo.owner,
               repo: context.repo.repo,
               check_run_id: ${{ steps.CreateCheck.outputs.check_run_id }},
