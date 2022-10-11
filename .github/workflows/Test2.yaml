@@ -100,17 +100,20 @@ jobs:
                  run_id: run_id
               });
               var artifacts = artifacts.data.artifacts.filter((artifact) => {
-                return artifact.name == 'Pull_Request_Files'
+                return artifact.name == 'Pull_Request_Files';
               });
               if (artifacts) {
                 matchArtifact = artifacts[0];
-                found = true
+                consoole.log('found');
+                found = true;
               }
               else {
+                console.log('wait');
                 await new Promise(r => setTimeout(r, 5000));
               }
             }
             while (!found)
+            console.log(matchArtifact);
             var download = await github.rest.actions.downloadArtifact({
                owner: context.repo.owner,
                repo: context.repo.repo,
