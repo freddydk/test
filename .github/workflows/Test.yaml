@@ -68,8 +68,8 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               ref: context.sha,
-              filter: all,
-              status: in_progress
+              filter: 'all',
+              status: 'in_progress'
             })
             console.log(response)
 
