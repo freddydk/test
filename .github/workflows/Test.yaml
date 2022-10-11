@@ -64,6 +64,7 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
+            await new Promise(r => setTimeout(r, 20000));
             var response = await github.rest.checks.listForRef({
               owner: context.repo.owner,
               repo: context.repo.repo,
