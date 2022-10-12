@@ -136,6 +136,14 @@ jobs:
             var fs = require('fs');
             fs.writeFileSync('${{ steps.FolderName.outputs.prfolder }}.zip', Buffer.from(download.data));
 
+      - name: ENV
+        run: |
+          dir env:
+    
+      - name: event
+        run: |
+          Get-Content "$ENV:GITHUB_EVENT_PATH" -encoding UTF8
+
       - name: Unpack Pull Request Files
         id: ChangedFiles
         run: |
