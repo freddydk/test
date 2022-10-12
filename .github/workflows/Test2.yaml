@@ -155,7 +155,7 @@ jobs:
 
       - name: Add Pull Request Files
         run: |
-          Write-Host '${{ github.event.workflow_run.head_repository.repo.full_name }}'
+          Write-Host '${{ github.event.workflow_run.head_repository.full_name }}'
           Write-Host $ENV:GITHUB_REPOSITORY
           $ErrorActionPreference = "STOP"
           $prfolder = '${{ steps.FolderName.outputs.prfolder }}'
@@ -165,7 +165,7 @@ jobs:
             $newFolder = [System.IO.Path]::GetDirectoryName($newPath)
             $extension = [System.IO.Path]::GetExtension($path)
             $filename = [System.IO.Path]::GetFileName($path)
-            if ('${{ github.event.workflow_run.head_repository.repo.full_name }}' -ne $ENV:GITHUB_REPOSITORY) {
+            if ('${{ github.event.workflow_run.head_repository.full_name }}' -ne $ENV:GITHUB_REPOSITORY) {
               if ($extension -eq '.ps1' -or $extension -eq '.yaml' -or $extension -eq '.yml' -or $filename -eq "CODEOWNERS") {
                 throw "Pull Request containing changes to scripts, workflows or CODEOWNERS are not allowed from forks."
               }
