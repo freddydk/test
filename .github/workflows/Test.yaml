@@ -41,11 +41,16 @@ jobs:
             $path = Join-Path $location $_
             $newPath = Join-Path $prPath $_
             $newfolder = [System.IO.Path]::GetDirectoryName($newpath)
+            $filename = [System.IO.Path]::GetFileName($path)
             if (-not (Test-Path $newfolder)) {
               New-Item $newfolder -ItemType Directory | Out-Null
             }
-            Copy-Item -Path $path -Destination $newfolder -ErrorAction SilentlyContinue
-            # Deletions...:-(
+            if (Test-Path $path) {
+              Copy-Item -Path $path -Destination $newfolder -ErrorAction SilentlyContinue
+            }
+            else {
+              New-Item -Path $newfolder -name $filename -itemType File | Out-Null
+            }
           }
           Set-Content -path (Join-Path $prPath "issue_number") -value '${{ github.event.number }}' -NoNewLine
 
