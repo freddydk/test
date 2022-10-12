@@ -4,7 +4,7 @@ on:
   workflow_run:
     workflows: ["Test"]
     types:
-      - in_progress
+      - completed
 
 defaults:
   run:
@@ -155,16 +155,26 @@ jobs:
 
       - name: Add Pull Request Files
         run: |
+          Write-Host '${{ github.event.workflow_run.head_repository.repo.full_name }}'
+          Write-Host $ENV:GITHUB_REPOSITORY
           $ErrorActionPreference = "STOP"
           $prfolder = '${{ steps.FolderName.outputs.prfolder }}'
           Get-ChildItem -Path $prfolder -Recurse -File | ForEach-Object {
-            $newPath = $_.FullName.Replace("$prfolder\","")
+            $path = $_.FullName
+            $newPath = $path.Replace("$prfolder\","")
             $newFolder = [System.IO.Path]::GetDirectoryName($newPath)
+            $extension = [System.IO.Path]::GetExtension($path)
+            $filename = [System.IO.Path]::GetFileName($path)
+            if ('${{ github.event.workflow_run.head_repository.repo.full_name }}' -ne $ENV:GITHUB_REPOSITORY) {
+              if ($extension -eq '.ps1' -or $extension -eq '.yaml' -or $extension -eq '.yml' -or $filename -eq "CODEOWNERS") {
+                throw "Pull Request containing changes to scripts, workflows or CODEOWNERS are not allowed from forks."
+              }
+            }
             if (-not (Test-Path $newFolder)) {
               New-Item $newFolder -ItemType Directory | Out-Null
             }
-            Write-Host "Copying $($_.FullName) to $newFolder"
-            Copy-Item $_.FullName -Destination $newFolder -Force
+            Write-Host "Copying $path to $newFolder"
+            Copy-Item $path -Destination $newFolder -Force
           }
 
       - name: Create Comment
