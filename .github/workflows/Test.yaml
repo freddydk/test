@@ -49,7 +49,7 @@ jobs:
               Copy-Item -Path $path -Destination $newfolder -ErrorAction SilentlyContinue
             }
             else {
-              New-Item -Path $newfolder -name $filename -itemType File | Out-Null
+              New-Item -Path $newfolder -name "$filename.REMOVE" -itemType File | Out-Null
             }
           }
           Set-Content -path (Join-Path $prPath "issue_number") -value '${{ github.event.number }}' -NoNewLine
