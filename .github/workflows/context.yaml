@@ -15,7 +15,16 @@ jobs:
       - name: ENV
         run: |
           dir env:
-    
+
+      - name: mask
+        run: |
+          Write-Host -nonewline "This is a test"
+          Write-Host "::add-mask::Freddy"
+
+      - name: print
+        run: |
+          Write-Host "Freddy Kristiansen"
+
       - name: event
         run: |
           Get-Content "$ENV:GITHUB_EVENT_PATH" -encoding UTF8
