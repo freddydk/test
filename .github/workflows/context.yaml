@@ -19,7 +19,7 @@ jobs:
       - name: mask
         run: |
           Write-Host -nonewline "This is a test"
-          Write-Host "::add-mask::Freddy"
+          Write-Host "`r::add-mask::Freddy"
 
       - name: print
         run: |
