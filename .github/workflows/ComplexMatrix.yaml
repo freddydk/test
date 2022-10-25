@@ -24,7 +24,7 @@ jobs:
         $json = @{"matrix" = @{"include" = @( @{ "country" = 'DK'; "os" = "Windows-2019" }, @{ "country" = 'US'; "os" = "Windows-2022" } ) }; "max-parallel" = 5; "fail-fast" = $true}
         $strategy = $json | ConvertTo-Json -depth 99 -compress
         Write-Host "::set-output name=strategy::$strategy"
-  SeeOutput:
+  SeeOutput#1:
     runs-on: windows-latest
     needs: DetermineCountries
     steps:
