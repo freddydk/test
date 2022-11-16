@@ -1,0 +1,20 @@
+name: Test3
+
+on:
+  workflow_run:
+    workflows: ["Test"]
+    types:
+      - requested
+
+defaults:
+  run:
+    shell: PowerShell
+
+jobs:
+  Testjob:
+    runs-on: windows-latest
+
+    steps:
+      - name: Investigate
+        run: |
+          Write-Host '${{ toJson(github.event) }}'
