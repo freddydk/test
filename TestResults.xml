@@ -26,3 +26,4 @@
     <testcase name="reports logs to JUnit" time="0.001" classname="logging during a test" file="packages/test-runner-junit-reporter/test/fixtures/multiple/simple-test.js"/>
   </testsuite>
 </testsuites>
+test
