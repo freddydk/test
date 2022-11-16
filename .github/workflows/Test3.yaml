@@ -17,4 +17,16 @@ jobs:
     steps:
       - name: Investigate
         run: |
-          Write-Host '${{ toJson(github.event) }}'
+          $errorActionPreference = 'STOP'
+          $event = '${{ toJson(github.event) }}' | ConvertFrom-Json
+          $event.workflow_run.pull_requests | ForEach-Object {
+            $url = "$($ENV:GITHUB_API_URL)/repos/$($ENV:GITHUB_REPOSITORY)/compare/$($_.base.SHA)...$($_.head.SHA)"
+            $response = Invoke-WebRequest -UseBasicParsing -Headers $headers -Uri $url | ConvertFrom-Json
+            Write-Host "Files Changed:"
+            $response.files | ForEach-Object {
+              $filename = $_.filename
+              $status = $_.status
+              Write-Host "- $filename $status"
+            }
+          }
+
