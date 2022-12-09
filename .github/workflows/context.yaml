@@ -12,10 +12,6 @@ jobs:
     runs-on: windows-latest
 
     steps:
-      - name: GCI
-        run: |
-          Get-ChildItem 'c:\modules' -recurse | out-host
-
       - name: ENV
         run: |
           Write-Host "ModulePath: '$ENV:PSModulePath'"
@@ -25,11 +21,10 @@ jobs:
 
       - name: Remove AzureRM
         run: |
-          Write-Host 'C:\Modules\Az_*\'
-          if (Test-Path 'C:\Modules\Az_*\') {
-            $modulePath = (Get-Item 'C:\Modules\Az_*\').FullName
-            Write-Host $modulePath
-            $ENV:PSModulePath = "$modulePath;$("$ENV:PSModulePath".Split(';') | Where-Object { $_ -notlike 'C:\\Modules\Azure*' } -join ';')"
+          $azModulesPath = Get-ChildItem 'C:\Modules\az_*' -Directory
+          if ($azModulesPath) {
+            Write-Host $azModulesPath.FullName
+            $ENV:PSModulePath = "$($azModulesPath.FullName);$(("$ENV:PSModulePath".Split(';') | Where-Object { $_ -notlike 'C:\\Modules\Azure*' }) -join ';')"
             Write-Host $ENV:PSModulePath
           }
           else {
@@ -63,3 +58,7 @@ jobs:
       - name: Echo on private
         run: echo "I am private"
         if: ${{github.event.repository.private}}
+
+      - name: GCI
+        run: |
+          Get-ChildItem 'c:\modules' -recurse | out-host
