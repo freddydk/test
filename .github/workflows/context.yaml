@@ -14,7 +14,9 @@ jobs:
     steps:
       - name: ENV
         run: |
+          $env:PSModulePath | Out-Host
           dir env:
+
 
       - name: mask
         run: |
