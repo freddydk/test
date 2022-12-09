@@ -26,7 +26,7 @@ jobs:
       - name: Remove AzureRM
         run: |
           Write-Host 'C:\Modules\Az_*\'
-          if (Test-Path 'C:\Modules\Az_*\' -pathType Container) {
+          if (Test-Path 'C:\Modules\Az_*\') {
             $modulePath = (Get-Item 'C:\Modules\Az_*\').FullName
             Write-Host $modulePath
             $ENV:PSModulePath = "$modulePath;$("$ENV:PSModulePath".Split(';') | Where-Object { $_ -notlike 'C:\\Modules\Azure*' } -join ';')"
