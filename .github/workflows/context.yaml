@@ -12,6 +12,10 @@ jobs:
     runs-on: windows-latest
 
     steps:
+      - name: GCI
+        run: |
+          Get-ChildItem 'c:\modules' -recurse | out-host
+
       - name: ENV
         run: |
           Write-Host "ModulePath: '$ENV:PSModulePath'"
