@@ -30,6 +30,8 @@ jobs:
           else {
             Write-Host "NOT EXIST"
           }
+          Add-Content -Path $env:GITHUB_ENV -Value "PSModulePath=$ENV:PSModulePath"
+ 
 
       - name: ENV
         run: |
