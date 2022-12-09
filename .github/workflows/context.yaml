@@ -16,6 +16,23 @@ jobs:
         run: |
           Write-Host "ModulePath: '$ENV:PSModulePath'"
           Write-Host "GITHUB_EVENT_PATH: '$ENV:GITHUB_EVENT_PATH'"
+          Get-Module Az.KeyVault -ListAvailable         
+          Get-Module AzureRM.KeyVault -ListAvailable         
+          dir env:
+
+      - name: Remove AzureRM
+        run: |
+          if (Test-Path 'C:\Modules\Az_*' -pathType Container) {
+            $modulePath = (Get-Item 'C:\Modules\Az_*').FullName
+            $ENV:PSModulePath = "$modulePath;$("$ENV:PSModulePath".Split(';') | Where-Object { $_ -notlike 'C:\Modules\Azure*' } -join ',')"
+          }
+
+      - name: ENV
+        run: |
+          Write-Host "ModulePath: '$ENV:PSModulePath'"
+          Write-Host "GITHUB_EVENT_PATH: '$ENV:GITHUB_EVENT_PATH'"
+          Get-Module Az.KeyVault -ListAvailable         
+          Get-Module AzureRM.KeyVault -ListAvailable         
           dir env:
 
       - name: mask
