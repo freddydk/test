@@ -14,7 +14,8 @@ jobs:
     steps:
       - name: ENV
         run: |
-          $env:PSModulePath | Out-Host
+          Write-Host "ModulePath: '$ENV:PSModulePath'"
+          Write-Host "GITHUB_EVENT_PATH: '$ENV:GITHUB_EVENT_PATH'"
           dir env:
 
 
