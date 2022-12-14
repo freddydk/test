@@ -10,7 +10,9 @@ defaults:
 jobs:
   update:
     runs-on: windows-latest
-    shell: powershell
+    defaults:
+      run:
+        shell: powershell
 
     steps:
       - name: ENV
