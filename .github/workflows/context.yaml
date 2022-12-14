@@ -10,10 +10,10 @@ defaults:
 jobs:
   update:
     runs-on: windows-latest
+    shell: powershell
 
     steps:
       - name: ENV
-        shell: powershell
         run: |
           Write-Host "ModulePath: '$ENV:PSModulePath'"
           Write-Host "GITHUB_EVENT_PATH: '$ENV:GITHUB_EVENT_PATH'"
@@ -64,3 +64,14 @@ jobs:
       - name: GCI
         run: |
           Get-ChildItem 'c:\modules' -recurse | out-host
+
+  update2:
+    runs-on: windows-latest
+
+    steps:
+      - name: ENV
+        run: |
+          Write-Host "ModulePath: '$ENV:PSModulePath'"
+          Write-Host "GITHUB_EVENT_PATH: '$ENV:GITHUB_EVENT_PATH'"
+          Get-Module Az.KeyVault -ListAvailable         
+          Get-Module AzureRM.KeyVault -ListAvailable         
