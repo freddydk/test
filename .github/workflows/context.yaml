@@ -5,7 +5,7 @@ on:
 
 defaults:
   run:
-    shell: PwSh
+    shell: pwsh
 
 jobs:
   update:
@@ -13,6 +13,7 @@ jobs:
 
     steps:
       - name: ENV
+        shell: powershell
         run: |
           Write-Host "ModulePath: '$ENV:PSModulePath'"
           Write-Host "GITHUB_EVENT_PATH: '$ENV:GITHUB_EVENT_PATH'"
@@ -25,14 +26,13 @@ jobs:
           if ($azModulesPath) {
             Write-Host $azModulesPath.FullName
             $ENV:PSModulePath = "$($azModulesPath.FullName);$(("$ENV:PSModulePath".Split(';') | Where-Object { $_ -notlike 'C:\\Modules\Azure*' }) -join ';')"
+            Add-Content -Path $env:GITHUB_ENV -Value "PSModulePath=$ENV:PSModulePath"
             Write-Host $ENV:PSModulePath
           }
           else {
             Write-Host "NOT EXIST"
           }
-          Add-Content -Path $env:GITHUB_ENV -Value "PSModulePath=$ENV:PSModulePath"
  
-
       - name: ENV
         run: |
           Write-Host "ModulePath: '$ENV:PSModulePath'"
