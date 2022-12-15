@@ -92,4 +92,5 @@ jobs:
     steps:
       - name: ComputerInfo
         run: |
+          cat /proc/meminfo
           sudo lshw
