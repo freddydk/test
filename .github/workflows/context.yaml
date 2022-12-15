@@ -102,5 +102,5 @@ jobs:
       - name: DownloadTest
         run: |
           $ProgressPreference = "SilentlyContinue"
-          cat /proc
+          cat /proc/vmstat
 
