@@ -85,3 +85,11 @@ jobs:
           Write-Host "GITHUB_EVENT_PATH: '$ENV:GITHUB_EVENT_PATH'"
           Get-Module Az.KeyVault -ListAvailable         
           Get-Module AzureRM.KeyVault -ListAvailable         
+
+  update3:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: ComputerInfo
+        run: |
+          Get-ComputerInfo | Out-Host
