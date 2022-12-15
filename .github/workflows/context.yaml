@@ -15,6 +15,10 @@ jobs:
         shell: powershell
 
     steps:
+      - name: ComputerInfo
+        run: |
+          Get-ComputerInfo | Out-Host
+
       - name: ENV
         run: |
           Write-Host "ModulePath: '$ENV:PSModulePath'"
@@ -71,6 +75,10 @@ jobs:
     runs-on: windows-latest
 
     steps:
+      - name: ComputerInfo
+        run: |
+          Get-ComputerInfo | Out-Host
+
       - name: ENV
         run: |
           Write-Host "ModulePath: '$ENV:PSModulePath'"
