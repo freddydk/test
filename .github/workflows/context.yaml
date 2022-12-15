@@ -102,4 +102,5 @@ jobs:
       - name: DownloadTest
         run: |
           $ProgressPreference = "SilentlyContinue"
-          sudo ps -a
+          sudo top
+
