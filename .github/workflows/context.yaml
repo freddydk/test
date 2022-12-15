@@ -79,6 +79,13 @@ jobs:
         run: |
           Get-ComputerInfo | Out-Host
 
+      - name: DownloadTest
+        run: |
+          $ProgressPreference = "SilentlyContinue"
+          Measure-Command {
+            Invoke-RestMethod -Method Get -UseBasicParsing -Uri 'https://bcartifacts.blob.core.windows.net/onprem/19.14.49970.0/us' -OutFile 'tmp.tmp'
+          }
+
       - name: ENV
         run: |
           Write-Host "ModulePath: '$ENV:PSModulePath'"
@@ -94,3 +101,10 @@ jobs:
         run: |
           cat /proc/meminfo
           sudo lshw
+
+      - name: DownloadTest
+        run: |
+          $ProgressPreference = "SilentlyContinue"
+          Measure-Command {
+            Invoke-RestMethod -Method Get -UseBasicParsing -Uri 'https://bcartifacts.blob.core.windows.net/onprem/19.14.49970.0/us' -OutFile 'tmp.tmp'
+          }
