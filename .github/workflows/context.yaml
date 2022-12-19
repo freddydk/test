@@ -107,6 +107,6 @@ jobs:
       - name: GCI
         run: |
           $ProgressPreference = "SilentlyContinue"
-          Get-ChildItem -path /home -directory | out-host
+          (Get-ChildItem -path /home -directory).FullName
 
 
