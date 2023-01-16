@@ -19,6 +19,14 @@ jobs:
         run: |
           Get-ComputerInfo | Out-Host
 
+      - name: VAR
+        env:
+          settings: ${{ VARS.ALGOSETTINGS }}
+        run: |
+          Write-Host "------------"
+          Write-Host $ENV:settings
+          Write-Host "------------"
+
       - name: ENV
         run: |
           Write-Host "ModulePath: '$ENV:PSModulePath'"
