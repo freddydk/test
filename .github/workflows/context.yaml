@@ -26,6 +26,9 @@ jobs:
           Write-Host "------------"
           Write-Host $ENV:settings
           Write-Host "------------"
+          if ($ENV:settings) {
+            Write-Host "SET"
+          }
 
       - name: ENV
         run: |
