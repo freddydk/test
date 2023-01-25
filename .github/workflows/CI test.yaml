@@ -1,4 +1,4 @@
-name: CITest
+name: 'æøå workflow'
 
 on:
   push:
