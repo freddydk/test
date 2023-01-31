@@ -1,0 +1,23 @@
+name: Fromjson
+
+on:
+  workflow_dispatch:
+
+defaults:
+  run:
+    shell: pwsh
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: MakeJson
+        id: makejson
+        run: |
+          Add-Content -Path $env:GITHUB_OUTPUT -Value 'json={"user":"freddy","city":"helsinge"}'
+
+      - name: City
+        env:
+          city: ${{ fromJson(steps.makejson.outputs.json).city }}
+        run: |
+          Write-Host $ENV:city
