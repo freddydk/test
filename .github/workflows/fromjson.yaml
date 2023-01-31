@@ -16,8 +16,25 @@ jobs:
         run: |
           Add-Content -Path $env:GITHUB_OUTPUT -Value 'json={"user":"freddy","city":"helsinge"}'
 
+      - uses: trstringer/manual-approval@v1
+        with:
+          secret: ${{ github.TOKEN }}
+          approvers: freddydk
+          minimum-approvals: 1
+          issue-title: "Continue?"
+          issue-body: "Please approve or deny"
+          exclude-workflow-initiator-as-approver: false
+          
       - name: City
         env:
           city: ${{ fromJson(steps.makejson.outputs.json).city }}
         run: |
           Write-Host $ENV:city
+
+  test2:
+    runs-on: ubuntu-latest
+    needs: [ test ]
+    steps:
+      - name: yep
+        run: |
+          Write-Host "GO"
