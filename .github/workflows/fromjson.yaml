@@ -16,14 +16,13 @@ jobs:
         run: |
           Add-Content -Path $env:GITHUB_OUTPUT -Value 'json={"user":"freddy","city":"helsinge"}'
 
-      - uses: trstringer/manual-approval@v1
+      - uses: step-security/wait-for-secrets@v1
+        id: wait-for-secrets
         with:
-          secret: ${{ github.TOKEN }}
-          approvers: freddydk
-          minimum-approvals: 1
-          issue-title: "Continue?"
-          issue-body: "Please approve or deny"
-          exclude-workflow-initiator-as-approver: false
+          secrets: |
+            OTP: 
+              name: 'OTP to publish package'
+              description: 'OTP from authenticator app'
           
       - name: City
         env:
