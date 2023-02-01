@@ -28,7 +28,7 @@ jobs:
         env:
           city: ${{ fromJson(steps.makejson.outputs.json).city }}
         run: |
-          Write-Host "::Warning"::Open https://www.google.com to authenticate to $($ENV:city)"
+          Write-Host "::Warning::Open https://www.google.com to authenticate to $($ENV:city)"
 
   test2:
     runs-on: ubuntu-latest
