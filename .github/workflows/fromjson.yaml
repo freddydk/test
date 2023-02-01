@@ -3,6 +3,9 @@ name: Fromjson
 on:
   workflow_dispatch:
 
+permissions:
+  actios: write
+
 defaults:
   run:
     shell: pwsh
