@@ -24,11 +24,12 @@ jobs:
         run: |
           Write-Host $ENV:city
 
-      - name: info
+      - name: SUMMARY
         env:
           city: ${{ fromJson(steps.makejson.outputs.json).city }}
         run: |
-          Write-Host "::Warning::Open https://www.google.com to authenticate to $($ENV:city)"
+          Add-Content -path $ENV:GITHUB_STEP_SUMMARY -value "Open https://www.google.com to authenticate to $($ENV:city)"
+
 
   test2:
     runs-on: ubuntu-latest
@@ -37,7 +38,6 @@ jobs:
     steps:
       - name: wait
         run: |
-          Write-Host "::warning::please respond"
           1..10 | % {
             Start-Sleep -seconds 10
             Write-Host "Please respond on https://www.google.com"
