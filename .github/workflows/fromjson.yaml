@@ -28,7 +28,7 @@ jobs:
         env:
           city: ${{ fromJson(steps.makejson.outputs.json).city }}
         run: |
-          Add-Content -path $ENV:GITHUB_STEP_SUMMARY -value "Open https://www.google.com to authenticate to $($ENV:city)"
+          Add-Content -path $ENV:GITHUB_STEP_SUMMARY -value "# Title`n`nOpen https://www.google.com to authenticate to $($ENV:city)"
 
   test2:
     runs-on: ubuntu-latest
