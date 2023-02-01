@@ -17,6 +17,7 @@ jobs:
         id: makejson
         run: |
           Add-Content -Path $env:GITHUB_OUTPUT -Value 'json={"user":"freddy","city":"helsinge"}'
+          gh secret set MYSECRET --body "gurli"
 
       - name: City
         env:
@@ -60,4 +61,6 @@ jobs:
       - name: wait
         run: |
           $secret = '${{ secrets.TESTSECRET }}'
+          Write-Host $secret.ToUpperInvariant()
+          $secret = '${{ secrets.MYSECRET }}'
           Write-Host $secret.ToUpperInvariant()
