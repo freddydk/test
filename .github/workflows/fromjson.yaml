@@ -16,13 +16,12 @@ jobs:
         run: |
           Add-Content -Path $env:GITHUB_OUTPUT -Value 'json={"user":"freddy","city":"helsinge"}'
 
-      - uses: step-security/wait-for-secrets@v1
-        id: wait-for-secrets
-        with:
-          secrets: |
-            OTP: 
-              name: 'OTP to publish package'
-              description: 'OTP from authenticator app'
+      - name: wait
+        run: |
+          1..100 {
+            Start-Sleep -seconds 10
+            Write-Host "Please respond"
+          }
           
       - name: City
         env:
