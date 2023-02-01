@@ -45,7 +45,7 @@ jobs:
         run: |
           $secret = '${{ secrets.TESTSECRET }}'
           Write-Host $secret.ToUpperInvariant()
-          1..100 | % {
+          1..10 | % {
             Start-Sleep -seconds 10
             $secret = '${{ secrets.TESTSECRET }}'
             Write-Host $secret.ToUpperInvariant()
@@ -59,4 +59,5 @@ jobs:
     steps:
       - name: wait
         run: |
-          Write-Host "::info::done"
+          $secret = '${{ secrets.TESTSECRET }}'
+          Write-Host $secret.ToUpperInvariant()
