@@ -10,13 +10,14 @@ defaults:
 jobs:
   test:
     runs-on: ubuntu-latest
+    outputs:
+      city: ${{ fromJson(steps.makejson.outputs.json).city }}
     steps:
       - name: MakeJson
         id: makejson
         run: |
           Add-Content -Path $env:GITHUB_OUTPUT -Value 'json={"user":"freddy","city":"helsinge"}'
 
-         
       - name: City
         env:
           city: ${{ fromJson(steps.makejson.outputs.json).city }}
@@ -25,7 +26,7 @@ jobs:
 
   test2:
     runs-on: ubuntu-latest
-    name: Open to authenticate
+    name: Click here to authenticate for deploying to ${{ needs.test.outputs.city }}
     needs: [ test ]
     steps:
       - name: wait
@@ -36,11 +37,9 @@ jobs:
             Write-Host "Please respond on https://www.google.com"
           }
 
-            test2:
-
   test3:
     runs-on: ubuntu-latest
-    name: Open to authenticate
+    name: Deploying
     needs: [ test2 ]
     steps:
       - name: wait
