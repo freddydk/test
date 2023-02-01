@@ -18,7 +18,8 @@ jobs:
 
       - name: wait
         run: |
-          1..100 {
+          Write-Host "::warning::please respond"
+          1..100 | % {
             Start-Sleep -seconds 10
             Write-Host "Please respond"
           }
