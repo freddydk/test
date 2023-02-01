@@ -48,7 +48,7 @@ jobs:
         run: |
           $secret = '${{ secrets.TESTSECRET }}'
           Write-Host $secret.ToUpperInvariant()
-          1..10 | % {
+          1..1 | % {
             Start-Sleep -seconds 10
             $secret = '${{ secrets.TESTSECRET }}'
             Write-Host $secret.ToUpperInvariant()
