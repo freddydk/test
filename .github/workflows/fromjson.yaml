@@ -22,6 +22,7 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           Add-Content -Path $env:GITHUB_OUTPUT -Value 'json={"user":"freddy","city":"helsinge"}'
+          gh auth status
           gh secret set MYSECRET --body "gurli" --repo freddydk/Test
 
       - name: City
