@@ -16,14 +16,7 @@ jobs:
         run: |
           Add-Content -Path $env:GITHUB_OUTPUT -Value 'json={"user":"freddy","city":"helsinge"}'
 
-      - name: wait
-        run: |
-          Write-Host "::warning::please respond"
-          1..100 | % {
-            Start-Sleep -seconds 10
-            Write-Host "Please respond on https://www.google.com"
-          }
-          
+         
       - name: City
         env:
           city: ${{ fromJson(steps.makejson.outputs.json).city }}
@@ -32,8 +25,24 @@ jobs:
 
   test2:
     runs-on: ubuntu-latest
+    name: Open to authenticate
     needs: [ test ]
     steps:
-      - name: yep
+      - name: wait
         run: |
-          Write-Host "GO"
+          Write-Host "::warning::please respond"
+          1..10 | % {
+            Start-Sleep -seconds 10
+            Write-Host "Please respond on https://www.google.com"
+          }
+
+            test2:
+
+  test3:
+    runs-on: ubuntu-latest
+    name: Open to authenticate
+    needs: [ test2 ]
+    steps:
+      - name: wait
+        run: |
+          Write-Host "::info::done"
