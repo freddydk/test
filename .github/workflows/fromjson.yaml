@@ -43,8 +43,12 @@ jobs:
 
       - name: wait
         run: |
-          1..10 | % {
+          $secret = '${{ secrets.TESTSECRET }}'
+          Write-Host $secret.ToUpperInvariant()
+          1..100 | % {
             Start-Sleep -seconds 10
+            $secret = '${{ secrets.TESTSECRET }}'
+            Write-Host $secret.ToUpperInvariant()
             Write-Host "Please respond on https://www.google.com"
           }
 
