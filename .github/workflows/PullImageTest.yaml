@@ -1,0 +1,19 @@
+name: Pull image test
+
+on:
+  workflow_dispatch:
+
+defaults:
+  run:
+    shell: PowerShell
+
+jobs:
+  update:
+    runs-on: windows-latest
+
+    steps:
+      - name: Pull image
+        run: |
+          docker pull ghcr.io/freddydk/my:sandbox-21.4.52563.53052-us-mt
+
+
