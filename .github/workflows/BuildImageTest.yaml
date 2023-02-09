@@ -30,6 +30,9 @@ jobs:
           Add-Content -Path $ENV:GITHUB_OUTPUT -value "folder=$folder"
           Add-Content -Path $ENV:GITHUB_OUTPUT -value "imageName=$imageName"
 
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
       - name: Build Image
         uses: docker/build-push-action@v4
         with:
