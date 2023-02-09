@@ -26,7 +26,7 @@ jobs:
             . $alGoHelperPath -local
             DownloadAndImportBcContainerHelper
             $token = '${{ secrets.PACKAGES }}'
-            $token.length | Out-Host
+            Write-Host "Authenticating to GitHub Container Registry"
             $job = start-job -ScriptBlock { Param($username, $token, $registry)
               Write-Output $token | docker login --username $username --password-stdin $registry
             } -ArgumentList '${{ github.actor }}', '${{ github.token }}', 'ghcr.io'
