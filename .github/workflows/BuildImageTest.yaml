@@ -27,6 +27,11 @@ jobs:
           $job = start-job -ScriptBlock { Param($username, $token, $registry)
             Write-Output $token | docker login --username $username --password-stdin $registry
           } -ArgumentList '${{ github.actor }}', '${{ secrets.PACKAGES }}', 'ghcr.io'
+          $job | Wait-Job -ErrorAction SilentlyContinue -WarningAction SilentlyContinue | Out-Null
+          $result = Receive-Job -ErrorAction SilentlyContinue -WarningAction SilentlyContinue $job 2> $NULL
+          if ($result -ne 'Login Succeeded') {
+            throw "docker login failed"
+          }
           $artifactUrl = get-bcartifacturl -country us 
           $folder = Join-Path $ENV:GITHUB_WORKSPACE 'buildfolder'
           $imageName = New-BcImage -artifactUrl $artifactUrl -imageName 'my'
