@@ -15,6 +15,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
+      - name: Init cache
+        uses: satackey/action-docker-layer-caching@v0.0.11
+          continue-on-error: true
+          with:
+            key: bcdocker-{hash}
+            restore-keys: |
+              bcdocker-
+
       - name: Build image
         run: |
           $erroractionpreference = "STOP"
