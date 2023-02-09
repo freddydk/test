@@ -14,11 +14,11 @@ jobs:
     steps:
       - name: Init cache
         uses: satackey/action-docker-layer-caching@v0.0.11
-          continue-on-error: true
-          with:
-            key: bcdocker-{hash}
-            restore-keys: |
-              bcdocker-
+        continue-on-error: true
+        with:
+          key: bcdocker-{hash}
+          restore-keys: |
+            bcdocker-
 
       - name: Pull image
         run: |
