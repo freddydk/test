@@ -24,9 +24,11 @@ jobs:
           $webClient.DownloadFile('https://raw.githubusercontent.com/freddydk/AL-Go-Actions/main/AL-Go-Helper.ps1', $alGoHelperPath)
           . $alGoHelperPath -local
           DownloadAndImportBcContainerHelper
+          $job = start-job -ScriptBlock { Param($username, $token, $registry)
+            Write-Output $token | docker login --username $username --password-stdin $registry
+          } -ArgumentList '${{ github.actor }}', '${{ secrets.PACKAGES }}', 'ghcr.io'
           $artifactUrl = get-bcartifacturl -country us 
           $folder = Join-Path $ENV:GITHUB_WORKSPACE 'buildfolder'
           $imageName = New-BcImage -artifactUrl $artifactUrl -imageName 'my'
-          echo ${{ secrets.PACKAGES }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
           docker tag $imageName ghcr.io/${{github.actor}}/$imageName
           docker push ghcr.io/${{github.actor}}/$imageName
