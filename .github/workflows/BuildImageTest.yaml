@@ -36,9 +36,9 @@ jobs:
               throw "Docker Login failed"
             }
             Write-Host "Docker $result"
-            $artifactUrl = get-bcartifacturl -country dk 
+            $artifactUrl = get-bcartifacturl -country us
             $folder = Join-Path $ENV:GITHUB_WORKSPACE 'buildfolder'
-            $imageName = New-BcImage -artifactUrl $artifactUrl -imageName 'businesscentral' -additionalLabels @("org.opencontainers.image.source=""https://github.com/$($ENV:GITHUB_REPOSITORY)""")
+            $imageName = New-BcImage -artifactUrl $artifactUrl -multitenant:$false -imageName 'businesscentral' -additionalLabels @("org.opencontainers.image.source=""https://github.com/$($ENV:GITHUB_REPOSITORY)""")
             docker tag $imageName ghcr.io/${{github.actor}}/$imageName
             docker push ghcr.io/${{github.actor}}/$imageName
           }
