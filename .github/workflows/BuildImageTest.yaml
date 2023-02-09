@@ -29,16 +29,16 @@ jobs:
             $token.length | Out-Host
             $job = start-job -ScriptBlock { Param($username, $token, $registry)
               Write-Output $token | docker login --username $username --password-stdin $registry
-            } -ArgumentList '${{ github.actor }}', '${{ secrets.PACKAGES }}', 'ghcr.io/${{ github.actor }}'
+            } -ArgumentList '${{ github.actor }}', '${{ github.token }}', 'ghcr.io'
             $job | Wait-Job -ErrorAction SilentlyContinue -WarningAction SilentlyContinue | Out-Null
             $result = Receive-Job -ErrorAction SilentlyContinue -WarningAction SilentlyContinue $job 2> $NULL
             if ($result -ne 'Login Succeeded') {
               throw "Docker Login failed"
             }
             Write-Host "Docker $result"
-            $artifactUrl = get-bcartifacturl -country us 
+            $artifactUrl = get-bcartifacturl -country dk 
             $folder = Join-Path $ENV:GITHUB_WORKSPACE 'buildfolder'
-            $imageName = New-BcImage -artifactUrl $artifactUrl -imageName 'my'
+            $imageName = New-BcImage -artifactUrl $artifactUrl -imageName 'businesscentral' -additionalLabels @("org.opencontainers.image.source=""https://github.com/$($ENV:GITHUB_REPOSITORY)""")
             docker tag $imageName ghcr.io/${{github.actor}}/$imageName
             docker push ghcr.io/${{github.actor}}/$imageName
           }
