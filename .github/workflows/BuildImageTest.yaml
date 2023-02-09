@@ -1,4 +1,4 @@
-name: Authentication test
+name: Build image test
 
 on:
   workflow_dispatch:
