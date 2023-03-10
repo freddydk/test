@@ -34,6 +34,7 @@ jobs:
         run: |
           Write-Host "ModulePath: '$ENV:PSModulePath'"
           Write-Host "GITHUB_EVENT_PATH: '$ENV:GITHUB_EVENT_PATH'"
+          Get-Content $ENV:GITHUB_EVENT_PATH | Out-Host
           Get-Module Az.KeyVault -ListAvailable         
           Get-Module AzureRM.KeyVault -ListAvailable         
 
