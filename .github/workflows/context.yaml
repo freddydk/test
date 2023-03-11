@@ -116,9 +116,4 @@ jobs:
           $ProgressPreference = "SilentlyContinue"
           cat /proc/vmstat
 
-      - name: GCI
-        run: |
-          $ProgressPreference = "SilentlyContinue"
-          (Get-ChildItem -path /home -directory).FullName
-
 
