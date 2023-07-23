@@ -13,7 +13,7 @@ pie title Pets adopted by volunteers
 |10USERTEST|60003|BCPT Create PO with N Lines|Enter Line Quantity|:x:|7,31|6|
 ||||Add Order|:x:|10,46|9|
 ||||Scenario|:x:|337,46|211|
-||||Enter Line Item No.|:OK:|6,23|3|
+||||Enter Line Item No.|✔️:|6,23|3|
 ||||Enter Account No.|:x:|11,15|8|
 ||60007|BCPT Detail Trial Bal. Report|Scenario|:x:|4.430,05|5|
 ||60004|BCPT Create SO with N Lines|Enter Line Quantity|:x:|11,58|12|
