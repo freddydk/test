@@ -2,12 +2,9 @@
 ## Test project
 
 ```mermaid
-barChart 
-x-axis "Fruits"
-y-axis "Count" 
-
-Apple, 20
-Orange, 30
-"Banana, ripe", 15
+pie title Pets adopted by volunteers
+    "Dogs" : 386
+    "Cats" : 85
+    "Rats" : 15
 ```
 
