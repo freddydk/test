@@ -2,10 +2,12 @@
 ## Test project
 
 ```mermaid
-pie
-    title Pie Chart
-    "Dogs" : 386
-    "Cats" : 85
-    "Rats" : 150 
+barChart 
+x-axis "Fruits"
+y-axis "Count" 
+
+Apple, 20
+Orange, 30
+"Banana, ripe", 15
 ```
 
