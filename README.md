@@ -37,5 +37,5 @@ pie title Pets adopted by volunteers
 | actor | | The GitHub actor running the action | github.actor |
 | token | - [x] | The GitHub token running the action | github.token |
 | parentTelemetryScopeJson | | Specifies the parent telemetry scope for the telemetry signal | {} |
-| project | :heavy_check_mark: | Name of project to analyze or . if the repository is setup for single project | |
+| project | :white_check_mark: | Name of project to analyze or . if the repository is setup for single project | |
 
