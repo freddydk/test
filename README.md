@@ -31,3 +31,11 @@ pie title Pets adopted by volunteers
 
 > No baseline provided. Copy a set of BCPT results to $baseLinePath in order to establish a baseline.
 
+| Name | Required | Description | Default value |
+| :-- | :-: | :-- | :-- |
+| shell | | The shell (powershell or pwsh) in which the PowerShell script in this action should run | powershell |
+| actor | | The GitHub actor running the action | github.actor |
+| token | - [x] | The GitHub token running the action | github.token |
+| parentTelemetryScopeJson | | Specifies the parent telemetry scope for the telemetry signal | {} |
+| project | ::check_mark:: | Name of project to analyze or . if the repository is setup for single project | |
+
