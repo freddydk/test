@@ -1,5 +1,3 @@
-name: Test/CICD
-
 on:
   workflow_dispatch:
 
