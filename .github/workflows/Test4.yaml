@@ -34,7 +34,7 @@ jobs:
 
       - name: SpCharsSecret Test
         env:
-          SPCHARSSECRET: ${{ secrets.SPCHARSSECRET }}
+          SPCHARSECRET: ${{ secrets.SPCHARSECRET }}
         run: |
           Write-Host "SPCHARSSECRET=$env:SPCHARSSECRET"
           Write-Host "SPCHARSSECRETjson=$($env:SPCHARSSECRET | ConvertTo-Json -compress)"
