@@ -37,5 +37,5 @@ jobs:
           SPCHARSECRET: ${{ secrets.SPCHARSECRET }}
         run: |
           Write-Host "SPCHARSECRET=$env:SPCHARSECRET"
-          Write-Host "SPCHARSECRETjson=$($env:SPCHARSECRET | ConvertTo-Json -compress)"
+          Write-Host "SPCHARSECRETjson=$(@{ "SEC" = $env:SPCHARSECRET} | ConvertTo-Json -compress)"
       
