@@ -16,10 +16,14 @@ jobs:
         run: |
           $test = "GURLI1`nTEST2=GURLI2"
           Add-Content -encoding utf8 -path $env:GITHUB_ENV -value "TEST1=$test"
-          Write-Host $env:TEST1
-          Write-Host $env:TEST2
 
       - name: Test2
         run: |
           Write-Host $env:TEST1
           Write-Host $env:TEST2
+
+      - name: Test3
+        env:
+          TEST3: ${{ secrets.TEST1 }}
+        run: |
+          Write-Host $env:TEST3
