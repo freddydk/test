@@ -1,4 +1,4 @@
-name: CICD
+name: Folder\CICD
 
 on:
   workflow_dispatch:
