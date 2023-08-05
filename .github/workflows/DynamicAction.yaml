@@ -1,0 +1,23 @@
+name: DynamicAction
+
+on:
+  workflow_dispatch:
+
+defaults:
+  run:
+    shell: PowerShell
+
+env:
+    action: 'actions/github-script@v6'
+
+jobs:
+  Test:
+    runs-on: windows-latest
+    steps:
+      - name: List Checks
+        uses: ${{ env.action }}
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            console.log('test');
+
