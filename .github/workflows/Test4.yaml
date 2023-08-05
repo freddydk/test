@@ -16,14 +16,26 @@ jobs:
         run: |
           $test = "GURLI1`nTEST2=GURLI2"
           Add-Content -encoding utf8 -path $env:GITHUB_ENV -value "TEST1=$test"
+          Add-Content -encoding utf8 -path $env:GITHUB_ENV -value "TEST1json=$($test | ConvertTo-Json -compress)"
 
       - name: Test2
         run: |
+          Write-Host $env:TEST1json
           Write-Host $env:TEST1
           Write-Host $env:TEST2
 
-      - name: Test3
+      - name: Secret Test
         env:
           TEST3: ${{ secrets.TEST1 }}
         run: |
+          # Multiline secrets are 
           Write-Host $env:TEST3
+          Write-Host "TEST2=GURLI2"
+
+      - name: SpCharsSecret Test
+        env:
+          SPCHARSSECRET: ${{ secrets.SPCHARSSECRET }}
+        run: |
+          Write-Host "SPCHARSSECRET=$env:SPCHARSSECRET"
+          Write-Host "SPCHARSSECRETjson=$($env:SPCHARSSECRET | ConvertTo-Json -compress)"
+      
