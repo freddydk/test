@@ -40,3 +40,5 @@ pie title Pets adopted by volunteers
 | project | :white_check_mark: | Name of project to analyze or . if the repository is setup for single project | |
 
 Test5
+Test7
+
