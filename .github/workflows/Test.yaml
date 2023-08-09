@@ -30,6 +30,7 @@ jobs:
             "body" = "Test Comment"
             "commit_id" = "$ENV:COMMITID"
             "path" = "README.md"
+            "subject-type" = "file"
           }
           $response = Invoke-WebRequest -method POST -UseBasicParsing -Headers $headers -Uri $url -Body ($body | ConvertTo-Json -Depth 99)
       
