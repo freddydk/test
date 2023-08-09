@@ -23,9 +23,9 @@ jobs:
           $headers = @{             
             "Authorization" = "token $ENV:GITHUB_TOKEN"
             "X-GitHub-Api-Version" = "2022-11-28"
-            "Accept" = application/vnd.github+json"
+            "Accept" = "application/vnd.github+json"
           }
-          $url = "$ENV:GITHUB_API_URL/repos/$($ENV:GITHUB_REPOSITORY)//pulls/$ENV:PRNUMBER/comments"
+          $url = "$ENV:GITHUB_API_URL/repos/$($ENV:GITHUB_REPOSITORY)/pulls/$ENV:PRNUMBER/comments"
           $body = @{
             "body": "Test Comment"
             "commit_id": "$ENV:COMMITID"
