@@ -27,9 +27,9 @@ jobs:
           }
           $url = "$ENV:GITHUB_API_URL/repos/$($ENV:GITHUB_REPOSITORY)/pulls/$ENV:PRNUMBER/comments"
           $body = @{
-            "body": "Test Comment"
-            "commit_id": "$ENV:COMMITID"
-            "path": "README.md"
+            "body" = "Test Comment"
+            "commit_id" = "$ENV:COMMITID"
+            "path" = "README.md"
           }
           $response = Invoke-WebRequest -method POST -UseBasicParsing -Headers $headers -Uri $url -Body ($body | ConvertTo-Json -Depth 99)
       
