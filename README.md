@@ -10,8 +10,8 @@ pie title Pets adopted by volunteers
 
 
 # BCPT
-|BCPT Suite|Codeunit ID|Codeunit Name|Operation|Status|Duration|Duration (Base)|Duration (Diff)|SQL Stmts|SQL Stmts (Base)|SQL Stmts (Diff)|
-|:---|:---|:---|:---|---:|:--:|---:|---:|---:|---:|---:|
+|BCPT Suite|Codeunit ID|Codeunit Name|Operation|Status|Duration (ms)|Duration base (ms)|Duration diff (ms)|SQL Stmts|SQL Stmts base|SQL Stmts diff|
+|:---------|:----------|:------------|:--------|:----:|------------:|-----------------:|-----------------:|--------:|-------------:|-------------:|
 |10USERTEST|60003|BCPT Create PO with N Lines|Scenario|:heavy_check_mark:|276.00|368.00|-92.00|211|211|0|
 ||||Enter Account No.|:heavy_check_mark:|8.00|9.00|-1.00|8|8|0|
 ||||Enter Line Item No.|:heavy_check_mark:|5.00|8.00|-3.00|3|3|0|
