@@ -1,0 +1,30 @@
+name: VARS
+
+on:
+  workflow_dispatch:
+
+defaults:
+  run:
+    shell: pwsh
+
+jobs:
+  Testjob:
+    runs-on: windows-latest
+
+    steps:
+      - name: Test1
+        env:
+          _secrets: ${{ tojson(secrets) }}
+          _vars: ${{ tojson(vars) }}
+        run: |
+          Write-Host "secrets=$env:_secrets"
+          Write-Host "vars=$env:_vars"
+
+      - name: Test2
+        environment: Test
+        env:
+          _secrets: ${{ tojson(secrets) }}
+          _vars: ${{ tojson(vars) }}
+        run: |
+          Write-Host "secrets=$env:_secrets"
+          Write-Host "vars=$env:_vars"
