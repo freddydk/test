@@ -21,6 +21,7 @@ jobs:
           Write-Host "vars=$env:_vars"
 
   Testjob2:
+    needs: Testjob
     runs-on: windows-latest
     environment: Test
     steps:
@@ -28,6 +29,14 @@ jobs:
         env:
           _secrets: ${{ tojson(secrets) }}
           _vars: ${{ tojson(vars) }}
+          Testvar: 'test'
         run: |
           Write-Host "secrets=$env:_secrets"
           Write-Host "vars=$env:_vars"
+          Write-Host "vars=$env:Testvar"
+
+      - name: Test3
+        run: |
+          Write-Host "secrets=$env:_secrets"
+          Write-Host "vars=$env:_vars"
+          Write-Host "vars=$env:Testvar"
