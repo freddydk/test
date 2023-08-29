@@ -27,6 +27,7 @@ jobs:
     steps:
       - name: Test2
         id: Test2
+        if: false
         env:
           _secrets: ${{ tojson(secrets) }}
           _vars: ${{ tojson(vars) }}
