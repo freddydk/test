@@ -26,6 +26,7 @@ jobs:
     environment: Test
     steps:
       - name: Test2
+        id: Test2
         env:
           _secrets: ${{ tojson(secrets) }}
           _vars: ${{ tojson(vars) }}
@@ -34,9 +35,13 @@ jobs:
           Write-Host "secrets=$env:_secrets"
           Write-Host "vars=$env:_vars"
           Write-Host "vars=$env:Testvar"
+          Add-Content -encoding UTF8 -path $env:GITHUB_OUTPUT -value "Testvar2=test2"
 
       - name: Test3
+        env:
+          _Testvar2: ${{ steps.Test2.outputs.Testvar2 }}
         run: |
           Write-Host "secrets=$env:_secrets"
           Write-Host "vars=$env:_vars"
           Write-Host "vars=$env:Testvar"
+          Write-Host "Testvar2=$env:_Testvar2"
