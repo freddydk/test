@@ -2,6 +2,11 @@ name: VARS
 
 on:
   workflow_dispatch:
+    inputs:
+      secret:
+        description: 'Secret'
+        required: false
+        default: ''
 
 defaults:
   run:
@@ -9,9 +14,17 @@ defaults:
 
 jobs:
   Testjob:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
 
     steps:
+      - name: Mask input
+        env:
+          _secret: ${{ github.event.inputs.secret }}
+        run: |
+          Write-Host $_secret
+          Write-Host "::add-mask::$_secret"
+          Write-Host $_secret
+
       - name: Test1
         env:
           _secrets: ${{ tojson(secrets) }}
