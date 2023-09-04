@@ -3,7 +3,7 @@ name: VARS
 on:
   workflow_dispatch:
     inputs:
-      secret:
+      token:
         description: 'Secret'
         required: false
         default: ''
@@ -19,7 +19,7 @@ jobs:
     steps:
       - name: Mask input
         env:
-          _secret: ${{ github.event.inputs.secret }}
+          _secret: ${{ github.event.inputs.token }}
         run: |
           Write-Host $env:_secret
           Write-Host "::add-mask::$env:_secret"
