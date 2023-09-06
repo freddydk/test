@@ -26,6 +26,12 @@ jobs:
             Write-Host $secret
           }
 
+      - name: ActionTest
+        uses: ./Action/action.yaml
+        with:
+          s1: 'Freddy'
+          s2: 'Kristiansen'
+
       - name: Test1
         env:
           _secrets: ${{ tojson(secrets) }}
