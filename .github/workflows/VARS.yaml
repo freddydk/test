@@ -30,7 +30,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: ActionTest
-        uses: ./Action
+        uses: ./.github/workflows/Action
         with:
           s1: 'Freddy'
           s2: 'Kristiansen'
