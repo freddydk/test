@@ -34,6 +34,7 @@ jobs:
 
       - name: ActionTest
         uses: ./.github/workflows/Action
+        if: secrets.ACTIONS_STEP_DEBUG -eq 'true'
         with:
           s1: 'Freddy'
           s2: 'Kristiansen'
