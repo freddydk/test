@@ -12,13 +12,11 @@ defaults:
   run:
     shell: pwsh
 
-env:
-  DebugMode: '${{ secrets.ACTIONS_STEP_DEBUG }}'
-
 jobs:
   Testjob:
     runs-on: ubuntu-latest
-
+    env:
+      DebugMode: '${{ secrets.ACTIONS_STEP_DEBUG }}'
     steps:
       - name: Mask input
         run: |
