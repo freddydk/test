@@ -12,6 +12,9 @@ defaults:
   run:
     shell: pwsh
 
+env:
+  DebugMode: '${{ secrets.ACTIONS_STEP_DEBUG }}'
+
 jobs:
   Testjob:
     runs-on: ubuntu-latest
@@ -30,9 +33,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: PreBuild
-        env:
-          debug: '${{ secrets.ACTIONS_STEP_DEBUG }}'
-        if: env.debug == 'true'
+        if: env.DebugMode == 'true'
         run: Write-Host "PreBuild"
 
       - name: ActionTest
