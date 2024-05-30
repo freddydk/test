@@ -17,10 +17,7 @@ jobs:
 
     steps:
       - name: Investigate
-        env:
-          CLIENT_ID: ${{ secrets.CLIENT_ID }}
-          TENANT_ID: ${{ secrets.TENANT_ID }}
         run: |
-          az login --service-principal "$ENV:CLIENT_ID" --tenant "$ENV:TENANT_ID" --allow-no-subscriptions
+          az login --service-principal "a26651f5-0e90-473c-b4f9-e96119aac8b8" --tenant "72f988bf-86f1-41af-91ab-2d7cd011db47" --allow-no-subscriptions
           az account list
 
