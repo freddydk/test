@@ -21,6 +21,6 @@ jobs:
           CLIENT_ID: ${{ secrets.CLIENT_ID }}
           TENANT_ID: ${{ secrets.TENANT_ID }}
         run: |
-          az login --service-principal $ENV:CLIENT_ID --tenant $ENV:TENANT_ID --allow-no-subscriptions
+          az login --service-principal "$ENV:CLIENT_ID" --tenant "$ENV:TENANT_ID" --allow-no-subscriptions
           az account list
 
