@@ -16,15 +16,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: 'Az CLI login'
-        uses: azure/login@v2
-        with:
-          client-id: ${{ secrets.CLIENT_ID }}
-          tenant-id: ${{ secrets.TENANT_ID }}
-          allow-no-subscriptions: true
-          enable-AzPSSession: true
-
       - name: Investigate
+        env:
+          CLIENT_ID: ${{ secrets.CLIENT_ID }}
+          TENANT_ID: ${{ secrets.TENANT_ID }}
         run: |
+          az login --service-principal -u $ENV:CLIENT_ID --tenant $ENV:TENANT_ID -allow-no-subscriptions
           az account list
 
