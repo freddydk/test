@@ -21,7 +21,7 @@ jobs:
         with:
           client-id: ${{ secrets.CLIENT_ID }}
           tenant-id: ${{ secrets.TENANT_ID }}
-          allow-no-subscription: true
+          allow-no-subscriptions: true
           enable-AzPSSession: true
 
       - name: Investigate
