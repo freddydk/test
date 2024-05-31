@@ -25,7 +25,8 @@ jobs:
           $accesstoken = ($response | ConvertFrom-Json).accesstoken
           Install-Module BcContainerHelper -force
           Import-Module BcContainerHelper
-          New-BcAuthContext -ClientID '${{ secrets.CLIENT_ID }}' -tenantID 'microsoft.com' -scopes 'https://api.partner.microsoft.com/.default' -clientSecret $accesstoken
+          $credential = New-Object pscredential -ArgumentList 'freddydk-test', (ConvertTo-SecureString -String $accesstoken -AsPlainText -force)
+          New-BcAuthContext -ClientID '${{ secrets.CLIENT_ID }}' -Credential $credential -scopes 'https://api.partner.microsoft.com/.default'
           
           
 
