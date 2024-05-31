@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Investigate
+      - name: LoginPS
         run: |
           Write-Host $ENV:ACTIONS_ID_TOKEN_REQUEST_URL
           Write-Host $ENV:ACTIONS_ID_TOKEN_REQUEST_TOKEN
