@@ -82,7 +82,7 @@ function New-BcAuthContext {
                 "client_assertion" = ($clientAssertion | Get-PlainText)
             }
         }
-        try {
+        $tokenrequestParams | ConvertTo-Json | Out-Host
             if (!$silent) { Write-Host "Attempting authentication to $scopes using clientCredentials..." }
             $TokenRequest = Invoke-RestMethod @TokenRequestParams -UseBasicParsing
             $accessToken = $TokenRequest.access_token
@@ -112,11 +112,6 @@ function New-BcAuthContext {
                 $authContext.TenantId = $jwtToken.tid
             }
 
-        }
-        catch {
-            Write-Host -ForegroundColor Red (GetExtendedErrorMessage $_)
-            $accessToken = $null
-        }
     }
     else {
         if ($scopes.EndsWith('/')) {
@@ -136,7 +131,6 @@ function New-BcAuthContext {
                 }
                 Headers = @{ "Content-Type" = "application/x-www-form-urlencoded" }
             }
-            try {
                 if (!$silent) { Write-Host "Attempting authentication to $Scopes using username/password..." }
                 $TokenRequest = Invoke-RestMethod @TokenRequestParams -UseBasicParsing
                 $accessToken = $TokenRequest.access_token
@@ -160,11 +154,6 @@ function New-BcAuthContext {
                     if (!$silent) { Write-Host "Authenticated to common, using tenant id $($jwtToken.tid)" }
                     $authContext.TenantId = $jwtToken.tid
                 }
-            }
-            catch {
-                Write-Host -ForegroundColor Yellow (GetExtendedErrorMessage $_).Replace('{EmailHidden}',$credential.UserName)
-                $accessToken = $null
-            }
         }
         if (!$accessToken -and $refreshToken) {
             $TokenRequestParams = @{
