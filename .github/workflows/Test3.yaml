@@ -21,7 +21,7 @@ jobs:
           Write-Host $ENV:ACTIONS_ID_TOKEN_REQUEST_URL
           Write-Host $ENV:ACTIONS_ID_TOKEN_REQUEST_TOKEN
           $token = Invoke-RestMethod -Method GET -Headers @{ "Authorization" = "bearer $ENV:ACTIONS_ID_TOKEN_REQUEST_TOKEN" } -Uri "$ENV:ACTIONS_ID_TOKEN_REQUEST_URL&audience=api://AzureADTokenExchange"
-          $token | Out-Host
-          az login --identity --username "a26651f5-0e90-473c-b4f9-e96119aac8b8" --tenant "72f988bf-86f1-41af-91ab-2d7cd011db47" --allow-no-subscriptions
+          $token.GetType() | Out-Host
+          az login --federated-token $token.value --allow-no-subscriptions
           az account list
 
