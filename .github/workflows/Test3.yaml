@@ -22,7 +22,7 @@ jobs:
           az login --service-principal --username '${{ secrets.CLIENT_ID }}' --tenant '${{ secrets.TENANT_ID }}' --federated-token $token.value --allow-no-subscriptions
           az account list
           $response = az account get-access-token
-          $accesstoken = ($response | ConvertFrmo-Json).accesstoken
+          $accesstoken = ($response | ConvertFrom-Json).accesstoken
           Install-Module BcContainerHelper -force
           Import-Module BcContainerHelper
           New-BcAuthContext -ClientID '${{ secrets.CLIENT_ID }}' -tenantID 'microsoft.com' -scopes 'https://api.partner.microsoft.com/.default' -clientSecret $accesstoken
