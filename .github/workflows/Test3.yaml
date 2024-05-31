@@ -16,17 +16,16 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+    
       - name: LoginPS
         run: |
+          . ./bcuaht.ps1
           $token = Invoke-RestMethod -Method GET -Headers @{ "Authorization" = "bearer $ENV:ACTIONS_ID_TOKEN_REQUEST_TOKEN" } -Uri "$ENV:ACTIONS_ID_TOKEN_REQUEST_URL&audience=api://AzureADTokenExchange"
           az login --service-principal --username '${{ secrets.CLIENT_ID }}' --tenant '${{ secrets.TENANT_ID }}' --federated-token $token.value --allow-no-subscriptions
           az account list
           $response = az account get-access-token
           $accesstoken = ($response | ConvertFrom-Json).accesstoken
-          Install-Module BcContainerHelper -force
-          Import-Module BcContainerHelper
-          $credential = New-Object pscredential -ArgumentList 'freddydk-test', (ConvertTo-SecureString -String $accesstoken -AsPlainText -force)
-          New-BcAuthContext -ClientID '${{ secrets.CLIENT_ID }}' -Credential $credential -scopes 'https://api.partner.microsoft.com/.default'
-          
-          
+          New-BcAuthContext -ClientID '${{ secrets.CLIENT_ID }}' -ClientAssertion $accesstoken -scopes 'https://api.partner.microsoft.com/.default'
 
