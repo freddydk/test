@@ -21,4 +21,11 @@ jobs:
           $token = Invoke-RestMethod -Method GET -Headers @{ "Authorization" = "bearer $ENV:ACTIONS_ID_TOKEN_REQUEST_TOKEN" } -Uri "$ENV:ACTIONS_ID_TOKEN_REQUEST_URL&audience=api://AzureADTokenExchange"
           az login --service-principal --username '${{ secrets.CLIENT_ID }}' --tenant '${{ secrets.TENANT_ID }}' --federated-token $token.value --allow-no-subscriptions
           az account list
+          $response = az account get-access-token
+          $accesstoken = ($response | ConvertFrmo-Json).accesstoken
+          Install-Module BcContainerHelper -force
+          Import-Module BcContainerHelper
+          New-BcAuthContext -ClientID '${{ secrets.CLIENT_ID }}' -tenantID 'microsoft.com' -scopes 'https://api.partner.microsoft.com/.default' -clientSecret $accesstoken
+          
+          
 
