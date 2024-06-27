@@ -6,7 +6,7 @@ on:
       project:
         description: Additional branches to update
         required: false
-        default: ${{ VARS.Branches }}
+        default: ${{ vars.Branches }}
 
 defaults:
   run:
