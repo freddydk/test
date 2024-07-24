@@ -28,4 +28,5 @@ jobs:
         run: |
           Write-Host "Query federated token"
           $result = Invoke-RestMethod -Method GET -UseBasicParsing -Headers @{ "Authorization" = "bearer $ENV:ACTIONS_ID_TOKEN_REQUEST_TOKEN"; "Accept" = "application/vnd.github+json" } -Uri "$ENV:ACTIONS_ID_TOKEN_REQUEST_URL&audience=api://AzureADTokenExchange"
-          Write-Host $result.value
+          $result.value.GetType() | Out-Host
+          $result.value.SubString(1) | Out-Host
