@@ -7,113 +7,25 @@ defaults:
   run:
     shell: pwsh
 
+permissions:
+  contents: read
+  actions: write
+  id-token: write
+
 jobs:
   update:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     defaults:
       run:
-        shell: powershell
+        shell: pwsh
 
     steps:
-      - name: ComputerInfo
-        run: |
-          Get-ComputerInfo | Out-Host
-
-      - name: VAR
-        env:
-          settings: ${{ VARS.ALGOSETTINGS }}
-        run: |
-          Write-Host "------------"
-          Write-Host $ENV:settings
-          Write-Host "------------"
-          if ($ENV:settings) {
-            Write-Host "SET"
-          }
-
       - name: ENV
         run: |
-          Write-Host "ModulePath: '$ENV:PSModulePath'"
-          Write-Host "GITHUB_EVENT_PATH: '$ENV:GITHUB_EVENT_PATH'"
-          Get-Content $ENV:GITHUB_EVENT_PATH | Out-Host
-          Get-Module Az.KeyVault -ListAvailable         
-          Get-Module AzureRM.KeyVault -ListAvailable         
+          Get-ChildItem env: | Out-Host
 
-      - name: Remove AzureRM
+      - name: Get ID-Token
         run: |
-          $azModulesPath = Get-ChildItem 'C:\Modules\az_*' -Directory
-          if ($azModulesPath) {
-            Write-Host $azModulesPath.FullName
-            $ENV:PSModulePath = "$($azModulesPath.FullName);$(("$ENV:PSModulePath".Split(';') | Where-Object { $_ -notlike 'C:\\Modules\Azure*' }) -join ';')"
-            Add-Content -Path $env:GITHUB_ENV -Value "PSModulePath=$ENV:PSModulePath"
-            Write-Host $ENV:PSModulePath
-          }
-          else {
-            Write-Host "NOT EXIST"
-          }
- 
-      - name: ENV
-        run: |
-          Write-Host "ModulePath: '$ENV:PSModulePath'"
-          Write-Host "GITHUB_EVENT_PATH: '$ENV:GITHUB_EVENT_PATH'"
-          Get-Module Az.KeyVault -ListAvailable         
-          Get-Module AzureRM.KeyVault -ListAvailable         
-
-      - name: ENV
-        run: |
-          dir env:
-
-      - name: mask
-        run: |
-          Write-Host -nonewline "This is a test"
-          Write-Host "`r::add-mask::Freddy"
-
-      - name: print
-        run: |
-          Write-Host "Freddy Kristiansen"
-
-      - name: event
-        run: |
-          Get-Content "$ENV:GITHUB_EVENT_PATH" -encoding UTF8
-
-      - name: Echo on private
-        run: echo "I am private"
-        if: ${{github.event.repository.private}}
-
-      - name: GCI
-        run: |
-          Get-ChildItem 'c:\modules' -recurse | out-host
-
-  update2:
-    runs-on: windows-latest
-
-    steps:
-      - name: ComputerInfo
-        run: |
-          Get-ComputerInfo | Out-Host
-
-      - name: DownloadTest
-        run: |
-          get-process
-
-      - name: ENV
-        run: |
-          Write-Host "ModulePath: '$ENV:PSModulePath'"
-          Write-Host "GITHUB_EVENT_PATH: '$ENV:GITHUB_EVENT_PATH'"
-          Get-Module Az.KeyVault -ListAvailable         
-          Get-Module AzureRM.KeyVault -ListAvailable         
-
-  update3:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: ComputerInfo
-        run: |
-          cat /proc/meminfo
-          sudo lshw
-
-      - name: DownloadTest
-        run: |
-          $ProgressPreference = "SilentlyContinue"
-          cat /proc/vmstat
-
-
+          Write-Host "Query federated token"
+          $result = Invoke-RestMethod -Method GET -UseBasicParsing -Headers @{ "Authorization" = "bearer $ENV:ACTIONS_ID_TOKEN_REQUEST_TOKEN"; "Accept" = "application/vnd.github+json" } -Uri "$ENV:ACTIONS_ID_TOKEN_REQUEST_URL&audience=api://AzureADTokenExchange"
+          Write-Host $result.value
