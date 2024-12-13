@@ -12,6 +12,11 @@ jobs:
     runs-on: windows-latest
 
     steps:
+      - name: info
+        run: |
+          Write-Host "::notice::This is a notice"
+          Write-Host "::warning::This is a warning"
+          
       - name: GCI
         run: |
           Set-location "c:\"
