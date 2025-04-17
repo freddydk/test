@@ -24,6 +24,10 @@ jobs:
         run: |
           Get-ChildItem env: | Out-Host
 
+      - name: Visibility
+        run: |
+          Write-Host "'${{ github.event.repository.visibility }}'"
+
       - name: Get ID-Token
         run: |
           function Parse-JWTtoken([string]$token) {
